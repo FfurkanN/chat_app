@@ -1,1 +1,5 @@
-<p class="text-3xl border min-h-screen">chat-page works!</p>
+<app-sidebar />
+<div class="flex pl-56 h-full w-full mb-16 bg-red-400">
+  <app-chat-message [message]="currentMessage" class="w-full m-5" />
+</div>
+<app-chat-textbox />
