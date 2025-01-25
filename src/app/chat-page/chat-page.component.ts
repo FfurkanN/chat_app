@@ -2,11 +2,17 @@ import { Component } from '@angular/core';
 import { ChatTextboxComponent } from '../../components/chat-textbox/chat-textbox.component';
 import { ChatMessageComponent } from '../../components/chat-message/chat-message.component';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
+import { UsersBarComponent } from '../../components/users-bar/users-bar.component';
 
 @Component({
   selector: 'app-chat-page',
   standalone: true,
-  imports: [ChatTextboxComponent, ChatMessageComponent, SidebarComponent],
+  imports: [
+    ChatTextboxComponent,
+    ChatMessageComponent,
+    SidebarComponent,
+    UsersBarComponent,
+  ],
   templateUrl: './chat-page.component.html',
   styleUrl: './chat-page.component.css',
 })
