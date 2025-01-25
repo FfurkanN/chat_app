@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-login-page',
+  selector: 'app-register-page',
   standalone: true,
   imports: [RouterModule],
-  templateUrl: './login-page.component.html',
-  styleUrl: './login-page.component.css',
+  templateUrl: './register-page.component.html',
+  styleUrl: './register-page.component.css',
 })
-export class LoginPageComponent {}
+export class RegisterPageComponent {}
