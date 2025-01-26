@@ -4,16 +4,17 @@
   >
     Users
   </h3>
-  <ul class="w-48 overflow-y-auto px-5 text-black dark:text-white">
+  <ul class="w-48 overflow-y-auto px-5 text-black dark:text-white min-w-xl">
     <li
       class="border border-zinc-700 rounded-xl p-2 bg-zinc-600/50 hover:bg-zinc-600/70 cursor-pointer flex flex-row my-3"
+      *ngFor="let user of users"
     >
       <img
         class="size-6 rounded-full mr-1"
         src="https://picsum.photos/400/600"
         alt="User profile image"
       />
-      User1
+      {{ user.username }}
     </li>
   </ul>
 </div>
