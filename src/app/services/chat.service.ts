@@ -4,29 +4,31 @@ import { Observable } from 'rxjs';
 import { User } from '../models/user';
 import { environment } from '../../environments/environment';
 import { Chat } from '../models/chat';
-import { Username } from '../models/username';
+import { CreateChat } from '../models/chat-create';
+import { DeleteChat } from '../models/chat-delete';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UserService {
+export class ChatService {
   constructor(private httpClient: HttpClient) {}
 
-  getUserByToken(): Observable<User> {
-    return this.httpClient.get<User>(
-      environment.apiUrl + '/Auth/GetUserByToken'
-    );
-  }
   getUserChats(user: User): Observable<Chat[]> {
     return this.httpClient.post<Chat[]>(
       environment.apiUrl + '/Chat/GetChats',
       user
     );
   }
-  getUserByUsername(username: Username): Observable<User | undefined> {
-    return this.httpClient.post<User | undefined>(
-      environment.apiUrl + '/User/GetUserByUsername',
-      username
+  createChat(createChat: CreateChat): Observable<Chat> {
+    return this.httpClient.post<Chat>(
+      environment.apiUrl + '/Chat/Create',
+      createChat
+    );
+  }
+  deleteChat(deleteChat: DeleteChat): Observable<Chat> {
+    return this.httpClient.delete<Chat>(
+      `${environment.apiUrl}/Chat/DeleteChat`,
+      { body: deleteChat }
     );
   }
 }

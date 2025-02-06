@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { LoginRequest } from '../../models/login-request';
 import { FormsModule } from '@angular/forms';
@@ -12,14 +12,18 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './login-page.component.css',
 })
 export class LoginPageComponent implements OnInit {
+  private router: Router = new Router();
+  error: string = '';
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.isLoggedIn();
+    if (this.isLoggedIn()) {
+      this.router.navigate(['/']);
+    }
   }
 
   credentials: LoginRequest = {
-    email: '',
+    UserNameOrEmail: '',
     password: '',
   };
 
@@ -28,8 +32,15 @@ export class LoginPageComponent implements OnInit {
   }
 
   login() {
-    this.authService.login(this.credentials).subscribe(() => {
-      console.log('Login successful');
+    this.authService.login(this.credentials).subscribe({
+      next: () => {
+        console.log('login successfull');
+        this.router.navigate(['/chat']);
+      },
+      error: (err) => {
+        console.error('Login failed', err);
+        this.error = 'Username or Password is wrong!';
+      },
     });
   }
 }

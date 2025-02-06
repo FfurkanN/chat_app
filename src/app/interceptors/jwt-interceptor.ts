@@ -1,30 +1,24 @@
-import {
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-} from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpEvent, HttpRequest, HttpHandlerFn } from '@angular/common/http';
+import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Observable } from 'rxjs';
 
-@Injectable()
-export class JWTInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService) {}
+export const JWTInterceptor = (
+  req: HttpRequest<any>,
+  next: HttpHandlerFn
+): Observable<HttpEvent<any>> => {
+  const authService = inject(AuthService);
 
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    const isLoggedIn = this.authService.isLoggedIn();
-
-    if (isLoggedIn) {
-      req = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-      });
-    }
-    return next.handle(req);
+  if (authService.isLoggedIn()) {
+    req = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
+    });
+    console.log('Header Authorization setted.');
   }
-}
+
+  console.log('HTTP request captured ', req);
+
+  return next(req);
+};

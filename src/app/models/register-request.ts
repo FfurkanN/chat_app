@@ -1,9 +1,7 @@
-export interface User {
-  id: string;
+export interface RegisterRequest {
   firstname: string;
   lastname: string;
-  userName: string;
+  username: string;
   email: string;
   password: string;
-  chats: string[];
 }

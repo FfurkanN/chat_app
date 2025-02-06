@@ -3,6 +3,38 @@
     <h2 class="text-2xl font-bold mb-6 text-center">Register</h2>
 
     <form #userRegisterForm="ngForm" (ngSubmit)="registerUser()">
+      <div class="flex flex-row">
+        <div class="mb-4 mr-2">
+          <label for="username" class="block text-gray-700 font-bold mb-2"
+            >First Name</label
+          >
+          <input
+            required
+            #firstname="ngModel"
+            type="text"
+            id="firstname"
+            name="firstname"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="firstname"
+            [(ngModel)]="user.firstname"
+          />
+        </div>
+        <div class="mb-4 ml-2">
+          <label for="username" class="block text-gray-700 font-bold mb-2"
+            >Last Name</label
+          >
+          <input
+            required
+            #lastname="ngModel"
+            type="text"
+            id="lastname"
+            name="lastname"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="lastname"
+            [(ngModel)]="user.lastname"
+          />
+        </div>
+      </div>
       <div class="mb-4">
         <label for="username" class="block text-gray-700 font-bold mb-2"
           >Username</label

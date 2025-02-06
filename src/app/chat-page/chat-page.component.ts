@@ -5,6 +5,7 @@ import { SidebarComponent } from '../components/sidebar/sidebar.component';
 import { UsersBarComponent } from '../components/users-bar/users-bar.component';
 import { User } from '../models/user';
 import { UserService } from '../services/user.service';
+import { ChatCreateComponent } from '../components/chat-create/chat-create.component';
 
 @Component({
   selector: 'app-chat-page',
@@ -14,6 +15,7 @@ import { UserService } from '../services/user.service';
     ChatMessageComponent,
     SidebarComponent,
     UsersBarComponent,
+    ChatCreateComponent,
   ],
   templateUrl: './chat-page.component.html',
   styleUrl: './chat-page.component.css',
@@ -22,15 +24,11 @@ export class ChatPageComponent implements OnInit {
   constructor(private userService: UserService) {}
 
   ngOnInit() {
-    this.loadUsers();
+    console.log('Chat-Page');
   }
 
   currentMessage: string = 'Hello';
   users: User[] = [];
 
-  loadUsers(): void {
-    this.userService.getUsers().subscribe((response) => {
-      this.users = response;
-    });
-  }
+  loadUsers(): void {}
 }
