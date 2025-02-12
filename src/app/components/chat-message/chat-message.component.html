@@ -1,3 +1,5 @@
+@for (message of messages; track message.id) { @if (message.sender_Id == userId)
+{
 <div class="flex flex-col items-end dark:text-white text-black mb-3">
   <div class="bg-slate-300 dark:bg-gray-600 p-3 rounded-xl max-w-3xl">
     <div class="my-2 flex flex-row items-center">
@@ -7,19 +9,12 @@
         alt="User profile image"
       />
       <span class="font-semibold">Me</span>
-      <span class="ml-3 dark:text-gray-400">11:46</span>
+      <span class="ml-3 dark:text-gray-400"> {{ message.send_Date }}</span>
     </div>
-    <p class="p-2 text-base font-normal">
-      {{ message }}
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur mollitia
-      velit dolorem ea, reiciendis fugit, sunt a odit debitis quo temporibus
-      cumque quos ipsa perspiciatis est officia laboriosam nihil hic libero
-      maxime provident? Minima eum magni maxime ipsum vel, molestias similique
-      repellendus voluptatibus amet reprehenderit dicta illum ad fugit eligendi?
-    </p>
+    <p class="p-2 text-base font-normal">{{ message.content }}</p>
   </div>
 </div>
-
+} @else {
 <div class="flex flex-col items-start dark:text-white text-black mb-3">
   <div class="bg-slate-300 dark:bg-gray-600 p-3 rounded-xl max-w-3xl">
     <div class="flex flex-row items-center">
@@ -28,16 +23,12 @@
         src="https://picsum.photos/200/300"
         alt="User profile image"
       />
-      <span class="font-semibold">Alexander</span>
-      <span class="ml-3 dark:text-gray-400">11:46</span>
+      <span class="font-semibold">{{ getSenderName(message.sender_Id) }}</span>
+      <span class="ml-3 dark:text-gray-400"> {{ message.send_Date }} </span>
     </div>
     <p class="p-2 text-base font-normal">
-      {{ message }} Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-      Deleniti sequi saepe velit aperiam itaque consequatur deserunt doloremque
-      excepturi ut, sed amet harum obcaecati, eaque officiis, magnam animi sint
-      doloribus dolores quod! Accusantium maxime ut dolor, dolorem deserunt
-      facilis, culpa, praesentium dolore assumenda totam quae! Sit soluta
-      repellendus nam provident consequuntur.
+      {{ message.content }}
     </p>
   </div>
 </div>
+} }

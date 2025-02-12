@@ -3,15 +3,13 @@
 >
   <div>
     <div class="flex flex-row items-center justify-center mt-5">
-      <h3
-        class="text-center text-3xl px-5 text-black dark:text-white"
-        (click)="getChats()"
-      >
+      <h3 class="text-center text-3xl px-5 text-black dark:text-white">
         Chats
       </h3>
       <button
         type="button"
         class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+        (click)="openChatCreate()"
       >
         Create
       </button>
@@ -20,8 +18,14 @@
       @for (chat of chats; track chat.id) { @if(chat != null){
       <li
         class="flex m-1 px-3 py-2 justify-between items-center rounded-xl bg-stone-200 hover:bg-stone-300 dark:bg-stone-700 dark:hover:bg-stone-600 text-black dark:text-white cursor-pointer"
+        (click)="openChatWindow(chat)"
       >
         {{ chat.name }}
+        @if(chat.unreadMessageCount != 0){
+        <span class="bg-red-600 text-white rounded-full px-2 py-1 text-xs">{{
+          chat.unreadMessageCount
+        }}</span>
+        } @if(user.id == chat.creator_Id){
         <button
           class="hover:fill-red-600 fill-black dark:fill-white"
           (click)="deleteChat(chat.id, user.id)"
@@ -36,12 +40,13 @@
             ></path>
           </svg>
         </button>
+        }
       </li>
       } }
     </ul>
   </div>
   <div
-    class="flex flex-row bg-slate-400 dark:bg-stone-950 text-black dark:text-white py-5 items-center justify-between px-5 cursor-pointer"
+    class="flex flex-row bg-slate-400 dark:bg-stone-950 text-black dark:text-white p-5 items-center justify-between cursor-pointer"
   >
     <div class="flex flex-row items-center">
       <img

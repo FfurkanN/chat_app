@@ -14,7 +14,11 @@
         src="https://picsum.photos/400/600"
         alt="User profile image"
       />
-      {{ user.userName }}
+      @if(user.isOnline){
+      <span class="text-white">{{ user.userName }}</span>
+      }@else {
+      <span class="text-red-600">{{ user.userName }}</span>
+      }
     </li>
   </ul>
 </div>

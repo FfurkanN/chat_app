@@ -1,14 +1,38 @@
-<app-chat-create />
+<div class="z-20 absolute right-0 m-2">
+  <!-- <app-alert-danger /> -->
+</div>
+
+@if(isCreatingChat){
+<app-chat-create
+  (closeChatCreatingWindow)="handleChildEvent($event)"
+  (chatForCreationEventEmitter)="handleChatCreation($event)"
+/>
+}
 <div class="flex flex-row w-full">
-  <app-sidebar />
-  <div class="flex flex-col w-full">
-    <div class="flex flex-row justify-between w-full pl-56 pb-20 max-h-screen">
-      <div class="flex flex-col w-full max-h-screen overflow-y-scroll p-3">
-        <app-chat-message [message]="currentMessage" />
-        <app-chat-message [message]="currentMessage" />
+  <app-sidebar
+    (openChatCreateWindow)="handleChildEvent($event)"
+    (Chat)="handleChatEvent($event)"
+    (userIdEmitter)="handleUserIdEvent($event)"
+    [chats]="chats"
+  />
+  <div class="flex flex-row w-full h-full">
+    <div class="flex flex-col w-full h-full pb-20 max-h-screen">
+      <div
+        #chatContainer
+        class="flex flex-col max-h-screen overflow-y-auto p-3 pl-56"
+      >
+        @if(isLoadingMessages){
+        <p>Loading</p>
+        } @else { @if(messages.length !== 0){
+        <app-chat-message
+          [messages]="messages"
+          [userId]="currentUser.id"
+          [users]="usersInChat"
+        />
+        } }
       </div>
-      <app-users-bar [users]="users" />
+      <app-chat-textbox (sendMessage)="handleMessageEvent($event)" />
     </div>
-    <app-chat-textbox />
+    <app-users-bar [users]="usersInChat" />
   </div>
 </div>

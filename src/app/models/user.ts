@@ -6,4 +6,6 @@ export interface User {
   email: string;
   password: string;
   chats: string[];
+  refreshToken: string;
+  isOnline: boolean;
 }

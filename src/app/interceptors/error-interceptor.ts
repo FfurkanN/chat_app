@@ -1,39 +1,47 @@
 import {
   HttpErrorResponse,
   HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
+  HttpHandlerFn,
   HttpRequest,
 } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject } from '@angular/core';
 import { catchError, Observable, switchMap, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
-@Injectable()
-export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService) {}
+export const ErrorInterceptor = (
+  req: HttpRequest<any>,
+  next: HttpHandlerFn
+): Observable<HttpEvent<any>> => {
+  const authService = inject(AuthService);
 
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    console.log('Error Interceptor');
-    return next.handle(req).pipe(
-      catchError((error) => {
-        if (error instanceof HttpErrorResponse && error.status === 401) {
-          if (!req.url.includes('/login')) {
-            return this.handle401Error(req, next);
-          } else {
-            return throwError(() => error);
-          }
+  // console.log('Error-Interceptor request captured ', req);
+  // authService.refreshToken().subscribe((response) => {
+  //   console.log('response', response);
+  // });
+
+  return next(req).pipe(
+    catchError((error) => {
+      console.log('ERROR', error);
+      if (error instanceof HttpErrorResponse && error.status === 401) {
+        console.error('401 Error');
+        if (!req.url.includes('/login')) {
+          authService.refreshToken().subscribe((response) => {
+            console.log('response', response);
+            localStorage.setItem('accessToken', response.accessToken);
+            localStorage.setItem('refreshToken', response.refreshToken);
+          });
+          return throwError(() => error);
+          // return handle401Error(req, next, authService);
         } else {
           return throwError(() => error);
         }
-      })
-    );
-  }
+      } else {
+        return throwError(() => error);
+      }
+    })
+  );
 
-  private addToken(req: HttpRequest<any>): HttpRequest<any> {
+  const addToken = (req: HttpRequest<any>): HttpRequest<any> => {
     const accessToken = localStorage.getItem('accessToken');
 
     if (accessToken) {
@@ -44,21 +52,22 @@ export class ErrorInterceptor implements HttpInterceptor {
       });
     }
     return req;
-  }
+  };
 
-  private handle401Error(
+  const handle401Error = (
     req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    return this.authService.refreshToken().pipe(
+    next: HttpHandlerFn,
+    authService: AuthService
+  ): Observable<HttpEvent<any>> => {
+    return authService.refreshToken().pipe(
       switchMap(() => {
-        return next.handle(this.addToken(req));
+        return next(addToken(req));
       }),
       catchError((error) => {
         console.error('Failed refresh token:', error);
-        this.authService.logout();
+        authService.logout();
         return throwError(() => error);
       })
     );
-  }
-}
+  };
+};

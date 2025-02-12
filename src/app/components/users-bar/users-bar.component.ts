@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { User } from '../../models/user';
 import { CommonModule } from '@angular/common';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-users-bar',

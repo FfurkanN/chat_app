@@ -18,15 +18,19 @@ export class UserService {
     );
   }
   getUserChats(user: User): Observable<Chat[]> {
-    return this.httpClient.post<Chat[]>(
-      environment.apiUrl + '/Chat/GetChats',
-      user
+    return this.httpClient.get<Chat[]>(
+      `${environment.apiUrl}/Chat/GetChats/?userId=${user.id}`
     );
   }
-  getUserByUsername(username: Username): Observable<User | undefined> {
-    return this.httpClient.post<User | undefined>(
-      environment.apiUrl + '/User/GetUserByUsername',
-      username
+  getUserByUsername(username: string): Observable<User | undefined> {
+    return this.httpClient.get<User | undefined>(
+      `${environment.apiUrl}/User/GetUserByUsername/?username=${username}`
+    );
+  }
+  getUsersById(usersId: string[]): Observable<User[]> {
+    return this.httpClient.post<User[]>(
+      `${environment.apiUrl}/User/GetUserById`,
+      usersId
     );
   }
 }

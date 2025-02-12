@@ -12,10 +12,13 @@ export const JWTInterceptor = (
   if (authService.isLoggedIn()) {
     req = req.clone({
       setHeaders: {
+        Accept: 'application/json',
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        'Content-Type': 'application/json',
       },
     });
-    console.log('Header Authorization setted.');
+
+    return next(req);
   }
 
   console.log('HTTP request captured ', req);

@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user';
 import { Chat } from '../../models/chat';
-import { CreateChat } from '../../models/chat-create';
 import { ChatService } from '../../services/chat.service';
 import { DeleteChat } from '../../models/chat-delete';
+import { AlertService } from '../../services/alert.service';
+import { Alert } from '../../models/alert';
 
 @Component({
   selector: 'app-sidebar',
@@ -15,6 +16,12 @@ import { DeleteChat } from '../../models/chat-delete';
   styleUrl: './sidebar.component.css',
 })
 export class SidebarComponent implements OnInit {
+  @Input() chats: Chat[] = [];
+
+  @Output() openChatCreateWindow: EventEmitter<boolean> = new EventEmitter();
+  @Output() Chat: EventEmitter<Chat> = new EventEmitter();
+  @Output() userIdEmitter: EventEmitter<User> = new EventEmitter();
+
   constructor(
     private authService: AuthService,
     private userService: UserService,
@@ -29,15 +36,11 @@ export class SidebarComponent implements OnInit {
     email: '',
     password: '',
     chats: [],
-  };
-  chats: Chat[] = [];
-
-  createChatModel: CreateChat = {
-    chatName: 'NewChat61',
-    creatorId: '',
+    refreshToken: '',
+    isOnline: false,
   };
 
-  public deleteChatModel: DeleteChat = {
+  deleteChatModel: DeleteChat = {
     userId: '',
     chatId: '',
   };
@@ -46,34 +49,19 @@ export class SidebarComponent implements OnInit {
     this.userService.getUserByToken().subscribe({
       next: (res) => {
         this.user = res;
-        this.createChatModel.creatorId = this.user.id;
-        this.getChats();
+        this.userIdEmitter.emit(this.user);
       },
       error: (err) => {
         console.error('Error fetching user by token', err);
       },
     });
+    console.log(this.chats);
   }
-  getChats(): void {
-    this.chatService.getUserChats(this.user).subscribe({
-      next: (res) => {
-        this.chats = res;
-        console.log('GetChats', this.chats);
-      },
-      error: (err) => {
-        console.error('Error fetching chats', err);
-      },
-    });
+  openChatCreate(): void {
+    this.openChatCreateWindow.emit(true);
   }
-  createChat(): void {
-    this.chatService.createChat(this.createChatModel).subscribe({
-      next: (res) => {
-        console.log('CreateChatRes', res);
-      },
-      error: (err) => {
-        console.error('Create chat error', err);
-      },
-    });
+  openChatWindow(chat: Chat): void {
+    this.Chat.emit(chat);
   }
 
   deleteChat(chatId: string, userId: string) {
@@ -82,7 +70,7 @@ export class SidebarComponent implements OnInit {
     this.chatService.deleteChat(this.deleteChatModel).subscribe({
       next: (res) => {
         console.log(res);
-        this.getChats();
+        this.chats = this.chats.filter((chat) => chat.id !== res.id);
       },
       error: (err) => {
         console.error(err);
@@ -91,6 +79,15 @@ export class SidebarComponent implements OnInit {
   }
 
   logout(): void {
-    this.authService.logout();
+    this.authService.refreshToken().subscribe({
+      next: (res) => {
+        console.log('response', res);
+        // this.authService.logout();
+      },
+      error: (err) => {
+        console.error('Error refreshing token', err);
+      },
+    });
+    //this.authService.logout();
   }
 }
