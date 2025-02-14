@@ -5,13 +5,12 @@ import { User } from '../../models/user';
 import { Chat } from '../../models/chat';
 import { ChatService } from '../../services/chat.service';
 import { DeleteChat } from '../../models/chat-delete';
-import { AlertService } from '../../services/alert.service';
-import { Alert } from '../../models/alert';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
 })
@@ -27,6 +26,8 @@ export class SidebarComponent implements OnInit {
     private userService: UserService,
     private chatService: ChatService
   ) {}
+
+  router: Router = new Router();
 
   user: User = {
     id: '',
@@ -76,6 +77,10 @@ export class SidebarComponent implements OnInit {
         console.error(err);
       },
     });
+  }
+
+  settings(): void {
+    this.router.navigate(['/profile/info', this.user.id]);
   }
 
   logout(): void {

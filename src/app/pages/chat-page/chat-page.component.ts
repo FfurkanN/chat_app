@@ -1,19 +1,17 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ChatTextboxComponent } from '../components/chat-textbox/chat-textbox.component';
-import { ChatMessageComponent } from '../components/chat-message/chat-message.component';
-import { SidebarComponent } from '../components/sidebar/sidebar.component';
-import { UsersBarComponent } from '../components/users-bar/users-bar.component';
-import { User } from '../models/user';
-import { ChatCreateComponent } from '../components/chat-create/chat-create.component';
-import { AlertDangerComponent } from '../components/alerts/alert-danger/alert-danger.component';
-import { Chat } from '../models/chat';
-import { Message } from '../models/message';
-import { ChatService } from '../services/chat.service';
-import { MessageSendModel } from '../models/message-send';
-import { SignalChatService } from '../services/signal-chat.service';
-import { UserService } from '../services/user.service';
-import { CreateChat } from '../models/chat-create';
-// import * as signalR from '@microsoft/signalr';
+import { ChatTextboxComponent } from '../../components/chat-textbox/chat-textbox.component';
+import { ChatMessageComponent } from '../../components/chat-message/chat-message.component';
+import { SidebarComponent } from '../../components/sidebar/sidebar.component';
+import { UsersBarComponent } from '../../components/users-bar/users-bar.component';
+import { User } from '../../models/user';
+import { ChatCreateComponent } from '../../components/chat-create/chat-create.component';
+import { Chat } from '../../models/chat';
+import { Message } from '../../models/message';
+import { ChatService } from '../../services/chat.service';
+import { MessageSendModel } from '../../models/message-send';
+import { SignalChatService } from '../../services/signal-chat.service';
+import { UserService } from '../../services/user.service';
+import { CreateChat } from '../../models/chat-create';
 
 @Component({
   selector: 'app-chat-page',
