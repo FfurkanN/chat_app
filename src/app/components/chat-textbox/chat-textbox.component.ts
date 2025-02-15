@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Message } from '../../models/message';
+import { faMousePointer } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-chat-textbox',
@@ -11,10 +11,15 @@ import { Message } from '../../models/message';
 })
 export class ChatTextboxComponent {
   @Output() sendMessage: EventEmitter<string> = new EventEmitter();
+  @Output() openVideoChatEventEmitter: EventEmitter<boolean> =
+    new EventEmitter();
   message: string = '';
 
   sendMessagetoParent(): void {
     this.sendMessage.emit(this.message);
     this.message = '';
+  }
+  openVideoChat(): void {
+    this.openVideoChatEventEmitter.emit(true);
   }
 }

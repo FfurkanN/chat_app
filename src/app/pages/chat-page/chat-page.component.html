@@ -1,25 +1,27 @@
-<div class="z-20 absolute right-0 m-2">
-  <!-- <app-alert-danger /> -->
-</div>
+<div class="flex">
+  <div class="z-20 absolute right-0 m-2">
+    <!-- <app-alert-danger /> -->
+  </div>
 
-@if(isCreatingChat){
-<app-chat-create
-  (closeChatCreatingWindow)="handleChildEvent($event)"
-  (chatForCreationEventEmitter)="handleChatCreation($event)"
-/>
-}
-<div class="flex flex-row w-full">
-  <app-sidebar
-    (openChatCreateWindow)="handleChildEvent($event)"
-    (Chat)="handleChatEvent($event)"
-    (userIdEmitter)="handleUserIdEvent($event)"
-    [chats]="chats"
+  @if(isCreatingChat){
+  <app-chat-create
+    (closeChatCreatingWindow)="handleChildEvent($event)"
+    (chatForCreationEventEmitter)="handleChatCreation($event)"
   />
-  <div class="flex flex-row w-full h-full">
-    <div class="flex flex-col w-full h-full pb-20 max-h-screen">
+  }
+  <div class="flex flex-row w-screen h-screen">
+    <app-sidebar
+      (openChatCreateWindow)="handleChildEvent($event)"
+      (Chat)="handleChatEvent($event)"
+      (userIdEmitter)="handleUserIdEvent($event)"
+      [chats]="chats"
+    />
+
+    @if(!isVideoChat){
+    <div class="flex flex-col w-full h-screen justify-between">
       <div
         #chatContainer
-        class="flex flex-col max-h-screen overflow-y-auto p-3 pl-56"
+        class="flex flex-col max-h-screen overflow-y-auto p-3 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
       >
         @if(isLoadingMessages){
         <p>Loading</p>
@@ -31,8 +33,20 @@
         />
         } }
       </div>
-      <app-chat-textbox (sendMessage)="handleMessageEvent($event)" />
+      @if(currentChatId){
+      <app-chat-textbox
+        (sendMessage)="handleMessageEvent($event)"
+        (openVideoChatEventEmitter)="openVideoChat($event)"
+      />
+      }
     </div>
+    @if(currentChatId){
     <app-users-bar [users]="usersInChat" />
+    } }@else{
+    <app-video-chat
+      class="grow"
+      (closeVideoChatEventEventEvmitter)="openVideoChat($event)"
+    />
+    }
   </div>
 </div>

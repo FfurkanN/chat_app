@@ -84,15 +84,6 @@ export class SidebarComponent implements OnInit {
   }
 
   logout(): void {
-    this.authService.refreshToken().subscribe({
-      next: (res) => {
-        console.log('response', res);
-        // this.authService.logout();
-      },
-      error: (err) => {
-        console.error('Error refreshing token', err);
-      },
-    });
-    //this.authService.logout();
+    this.authService.logout();
   }
 }

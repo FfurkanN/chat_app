@@ -1,0 +1,36 @@
+<div class="z-40 w-full h-full flex flex-col justify-between">
+  <div class="w-full h-full grid grid-cols-4 grid-rows-3 gap-4">
+    <div class="rounded-md m-2">
+      <img
+        src="https://picsum.photos/1920/1080"
+        alt=""
+        class="rounded-md border hover:border-green-600"
+      />
+    </div>
+  </div>
+  <div class="flex justify-between text-2xl dark:text-white/70 m-2">
+    <div class="flex w-full justify-center">
+      <div>
+        <i
+          class="fa-solid fa-video p-3 mx-2 rounded-full bg-neutral-700 dark:hover:bg-neutral-300 dark:hover:text-neutral-800 cursor-pointer"
+        ></i>
+      </div>
+      <div>
+        <i
+          class="fa-solid fa-microphone p-3 mx-2 rounded-full bg-neutral-700 dark:hover:bg-neutral-300 dark:hover:text-neutral-800 cursor-pointer"
+        ></i>
+      </div>
+      <div>
+        <i
+          class="fa-solid fa-phone p-3 mx-2 rounded-full bg-neutral-700 dark:hover:bg-neutral-300 dark:hover:text-neutral-800 cursor-pointer"
+        ></i>
+      </div>
+    </div>
+    <div>
+      <i
+        class="fa-brands fa-rocketchat p-3 rounded-full bg-neutral-700 dark:hover:bg-neutral-300 dark:hover:text-neutral-800 cursor-pointer"
+        (click)="closeVideoChat()"
+      ></i>
+    </div>
+  </div>
+</div>

@@ -10,11 +10,13 @@
   </div>
   <div class="flex flex-col items-center justify-center">
     <div class="text-4xl font-semibold leading-normal mb-2 dark:text-white/90">
-      Darth Vader <span class="text-lg dark:text-white/30">#userID</span>
+      {{ user.userName }}
     </div>
-    <div class="text-2xl dark:text-white/50 font-semibold leading-normal mb-10">
-      Anakin Skywalker
+    <div class="text-2xl dark:text-white/50 font-semibold leading-normal mb-2">
+      {{ user.firstname }} {{ user.lastname }}
     </div>
+    <span class="text-lg dark:text-white/30">#{{ user.id }}</span>
+
     <div class="mb-4 text-base w-1/2 dark:text-white/60 hidden">
       Anakin Skywalker was a legendary Force-sensitive human male who was a Jedi
       Knight of the Galactic Republic and the prophesied Chosen One of the Jedi

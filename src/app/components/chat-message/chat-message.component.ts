@@ -17,6 +17,8 @@ export class ChatMessageComponent {
   @Input() userId: string = '';
   @Input() users: User[] = [];
 
+  previusSender: string = '';
+
   getSenderName(senderId: string): string {
     const sender = this.users.find((user) => user.id === senderId);
     return sender?.userName || 'Unknown';

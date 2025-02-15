@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { Message } from '../models/message';
+import { environmentSignal } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,7 @@ export class SignalChatService {
 
   startConnection(userId: string) {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('https://localhost:7292/chat-hub')
+      .withUrl(environmentSignal.apiUrl)
       .withAutomaticReconnect()
       .build();
 

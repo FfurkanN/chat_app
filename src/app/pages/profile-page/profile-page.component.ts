@@ -11,40 +11,37 @@ import { User } from '../../models/user';
   styleUrl: './profile-page.component.css',
 })
 export class ProfilePageComponent implements OnInit {
-  constructor(
-    private route: ActivatedRoute,
-    private userService: UserService
-  ) {}
+  constructor(private route: ActivatedRoute) {}
   userId: string = '';
 
-  user: User = {
-    id: '',
-    firstname: '',
-    lastname: '',
-    userName: '',
-    email: '',
-    password: '',
-    chats: [],
-    refreshToken: '',
-    isOnline: false,
-  };
+  // user: User = {
+  //   id: '',
+  //   firstname: '',
+  //   lastname: '',
+  //   userName: '',
+  //   email: '',
+  //   password: '',
+  //   chats: [],
+  //   refreshToken: '',
+  //   isOnline: false,
+  // };
 
   ngOnInit(): void {
     this.route.firstChild?.params.subscribe((params) => {
       this.userId = params['id'];
       console.log(this.userId);
     });
-    this.getUserById();
+    // this.getUserById();
   }
 
-  getUserById() {
-    this.userService.getUsersById([this.userId]).subscribe({
-      next: (res) => {
-        this.user = res[0];
-      },
-      error: (err) => {
-        console.error('Error fetching user by id', err);
-      },
-    });
-  }
+  // getUserById() {
+  //   this.userService.getUsersById([this.userId]).subscribe({
+  //     next: (res) => {
+  //       this.user = res[0];
+  //     },
+  //     error: (err) => {
+  //       console.error('Error fetching user by id', err);
+  //     },
+  //   });
+  // }
 }

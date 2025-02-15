@@ -1,29 +1,26 @@
-@for (message of messages; track message.id) {
-<div class="flex flex-col items-start dark:text-white text-black mx-8 my-5">
+@for (message of messages; track message.id;let index = $index) {
+<div class="flex flex-col items-start dark:text-white text-black mx-8">
+  @if (index === 0 || messages[index - 1].sender_Id !== message.sender_Id) {
   <div class="flex flex-row items-center">
     <img
       class="size-8 rounded-full mr-3"
       src="https://picsum.photos/200/300"
       alt="User profile image"
     />
-    <span class="font-semibold text-base">{{
-      getSenderName(message.sender_Id)
-    }}</span>
+    <span class="font-semibold text-base">
+      {{ getSenderName(message.sender_Id) }}
+    </span>
     <span class="ml-3 dark:text-white/30 text-sm font-light">
       {{ getSendTime(message.send_Date) }}
     </span>
   </div>
+  }
   <div class="flex flex-col ml-10">
-    @if(message.messageType === 'text'){
+    @if (message.messageType === 'text') {
     <p class="p-2 text-base font-normal dark:text-white/80">
-      {{ message.content }} Lorem ipsum dolor sit amet consectetur adipisicing
-      elit. Expedita, fugit veritatis. Cupiditate, praesentium necessitatibus?
-      Vitae ad iste cupiditate reprehenderit eum repellendus reiciendis
-      blanditiis, quos sunt excepturi unde fuga aperiam ex pariatur, vel minus!
-      Atque totam consectetur maiores aperiam odit saepe? Atque doloribus
-      possimus ea laboriosam, consequuntur earum sunt delectus eaque.
+      {{ message.content }}
     </p>
-    } @if(message.messageType === 'image'){
+    } @if (message.messageType === 'image') {
     <img class="size-10/12" src="{{ message.file_Url }}" alt="" />
     }
   </div>

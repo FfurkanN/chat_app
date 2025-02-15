@@ -12,6 +12,7 @@ import { MessageSendModel } from '../../models/message-send';
 import { SignalChatService } from '../../services/signal-chat.service';
 import { UserService } from '../../services/user.service';
 import { CreateChat } from '../../models/chat-create';
+import { VideoChatComponent } from '../../components/video-chat/video-chat.component';
 
 @Component({
   selector: 'app-chat-page',
@@ -22,6 +23,7 @@ import { CreateChat } from '../../models/chat-create';
     SidebarComponent,
     UsersBarComponent,
     ChatCreateComponent,
+    VideoChatComponent,
   ],
   templateUrl: './chat-page.component.html',
   styleUrl: './chat-page.component.css',
@@ -31,6 +33,7 @@ export class ChatPageComponent implements OnInit {
 
   isCreatingChat: boolean = false;
   isLoadingMessages: boolean = false;
+  isVideoChat: boolean = true;
 
   currentMessage: MessageSendModel = {
     chatId: '',
@@ -182,6 +185,10 @@ export class ChatPageComponent implements OnInit {
         console.error('Create chat error', err);
       },
     });
+  }
+  openVideoChat(value: boolean): void {
+    this.isVideoChat = value;
+    this.scrollToBottom();
   }
 
   public scrollToBottom() {
