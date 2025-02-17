@@ -33,4 +33,13 @@ export class UserService {
       usersId
     );
   }
+  uploadProfilePicture(file: File, userId: string): Observable<User> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.httpClient.post<User>(
+      `${environment.apiUrl}/User/UploadProfileImage`,
+      { formData, userId }
+    );
+  }
 }

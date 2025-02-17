@@ -1,1 +1,6 @@
 <p>profile-settings works!</p>
+<input type="file" (change)="onFileSelected($event)" accept="image/*" />
+<button (click)="uploadProfileImage()">Submit</button>
+@if(uploadedFileUrl){
+<img [src]="uploadedFileUrl" alt="" />
+}

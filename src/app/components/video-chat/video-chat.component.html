@@ -1,18 +1,25 @@
-<div class="z-40 w-full h-full flex flex-col justify-between">
-  <div class="w-full h-full grid grid-cols-4 grid-rows-3 gap-4">
-    <div class="rounded-md m-2">
-      <img
-        src="https://picsum.photos/1920/1080"
+<div class="z-40 w-full h-full flex flex-col justify-between max-h-screen">
+  <div
+    #chatVideos
+    [class]="gridClass"
+    class="grid gap-2 p-2 w-full h-full bg-red-500"
+  >
+    @for(number of numbers;track number){
+    <div class="rounded-md w-full h-full bg-green-400">
+      <!-- <img
+        src="https://picsum.photos/200/300"
         alt=""
-        class="rounded-md border hover:border-green-600"
-      />
+        class="rounded-md border hover:border-green-600 max-w-full max-h-full object-cover"
+      /> -->
     </div>
+    }
   </div>
   <div class="flex justify-between text-2xl dark:text-white/70 m-2">
     <div class="flex w-full justify-center">
       <div>
         <i
           class="fa-solid fa-video p-3 mx-2 rounded-full bg-neutral-700 dark:hover:bg-neutral-300 dark:hover:text-neutral-800 cursor-pointer"
+          (click)="logHeight()"
         ></i>
       </div>
       <div>

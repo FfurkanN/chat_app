@@ -33,7 +33,7 @@ export class ChatPageComponent implements OnInit {
 
   isCreatingChat: boolean = false;
   isLoadingMessages: boolean = false;
-  isVideoChat: boolean = true;
+  isVideoChat: boolean = false;
 
   currentMessage: MessageSendModel = {
     chatId: '',
