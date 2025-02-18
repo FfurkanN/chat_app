@@ -38,6 +38,12 @@ export class ChatService {
       `${environment.apiUrl}/Chat/GetMessages/?chatId=${chatId}`
     );
   }
+  getUsersFromChat(chatId: string): Observable<User[]> {
+    return this.httpClient.get<User[]>(
+      `${environment.apiUrl}/Chat/GetUsersFromChat/?chatId=${chatId}`
+    );
+  }
+
   sendMessage(message: MessageSendModel): Observable<Message> {
     return this.httpClient.post<Message>(
       `${environment.apiUrl}/Chat/SendMessage`,

@@ -3,7 +3,7 @@ import { Message } from '../../models/message';
 import { CommonModule } from '@angular/common';
 import { User } from '../../models/user';
 import { formatDistanceToNow } from 'date-fns';
-import { from } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-chat-message',
@@ -18,10 +18,14 @@ export class ChatMessageComponent {
   @Input() users: User[] = [];
 
   previusSender: string = '';
+  profileImageApi: string = environment.profileImageUrl;
 
-  getSenderName(senderId: string): string {
+  getSender(senderId: string): User {
     const sender = this.users.find((user) => user.id === senderId);
-    return sender?.userName || 'Unknown';
+    if (!sender) {
+      throw new Error(`User with Id ${senderId} not found`);
+    }
+    return sender;
   }
   getSendTime(sendDate: Date): string {
     return formatDistanceToNow(sendDate);

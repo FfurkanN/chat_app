@@ -5,7 +5,7 @@ export interface User {
   userName: string;
   email: string;
   password: string;
-  chats: string[];
   refreshToken: string;
   isOnline: boolean;
+  profileImageUrl: string;
 }

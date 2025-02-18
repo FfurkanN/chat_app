@@ -53,9 +53,10 @@ export class ChatPageComponent implements OnInit {
     userName: '',
     email: '',
     password: '',
-    chats: [],
+
     refreshToken: '',
     isOnline: false,
+    profileImageUrl: '',
   };
 
   chats: Chat[] = [];
@@ -122,6 +123,7 @@ export class ChatPageComponent implements OnInit {
       next: (messages) => {
         this.messages = messages;
         this.isLoadingMessages = false;
+
         setTimeout(() => this.scrollToBottom(), 10);
       },
       error: (err) => {
@@ -129,9 +131,10 @@ export class ChatPageComponent implements OnInit {
       },
     });
 
-    this.userService.getUsersById(value.members).subscribe({
+    this.chatService.getUsersFromChat(value.id).subscribe({
       next: (users) => {
         this.usersInChat = users;
+        console.log('USERS', users);
       },
       error: (err) => {
         console.error('Error getting users in chat', err);

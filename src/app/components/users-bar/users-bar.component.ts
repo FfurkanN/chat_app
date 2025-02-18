@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { User } from '../../models/user';
 import { RouterLink } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-users-bar',
@@ -12,4 +13,6 @@ import { RouterLink } from '@angular/router';
 })
 export class UsersBarComponent {
   @Input() users: User[] = [];
+
+  profileImageApi: string = environment.profileImageUrl;
 }

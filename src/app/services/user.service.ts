@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../models/user';
@@ -30,16 +30,25 @@ export class UserService {
   getUsersById(usersId: string[]): Observable<User[]> {
     return this.httpClient.post<User[]>(
       `${environment.apiUrl}/User/GetUserById`,
-      usersId
+      usersId,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+      }
     );
   }
   uploadProfilePicture(file: File, userId: string): Observable<User> {
     const formData = new FormData();
     formData.append('file', file);
+    // formData.append('userId', userId);
+
+    console.log(formData.getAll('file'));
+    // console.log(formData.getAll('userId'));
 
     return this.httpClient.post<User>(
       `${environment.apiUrl}/User/UploadProfileImage`,
-      { formData, userId }
+      formData
     );
   }
 }

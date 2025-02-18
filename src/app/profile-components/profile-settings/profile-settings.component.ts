@@ -21,9 +21,9 @@ export class ProfileSettingsComponent implements OnInit {
     userName: '',
     email: '',
     password: '',
-    chats: [],
     refreshToken: '',
     isOnline: false,
+    profileImageUrl: '',
   };
 
   constructor(
@@ -37,11 +37,9 @@ export class ProfileSettingsComponent implements OnInit {
   }
 
   onFileSelected(event: any) {
-    console.log(event);
-    if (event.target.file.lenght > 0) {
+    if (event.target.files) {
       this.selectedFile = event.target.files[0];
     }
-    this.selectedFile = event.target.files[0];
   }
   uploadProfileImage() {
     if (this.selectedFile) {

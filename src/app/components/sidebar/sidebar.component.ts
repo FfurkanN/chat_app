@@ -6,6 +6,7 @@ import { Chat } from '../../models/chat';
 import { ChatService } from '../../services/chat.service';
 import { DeleteChat } from '../../models/chat-delete';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-sidebar',
@@ -36,21 +37,25 @@ export class SidebarComponent implements OnInit {
     userName: '',
     email: '',
     password: '',
-    chats: [],
     refreshToken: '',
     isOnline: false,
+    profileImageUrl: '',
   };
 
   deleteChatModel: DeleteChat = {
     userId: '',
     chatId: '',
   };
+  enviromentProfileImageUrl: string = '';
 
   ngOnInit(): void {
     this.userService.getUserByToken().subscribe({
       next: (res) => {
         this.user = res;
         this.userIdEmitter.emit(this.user);
+        this.enviromentProfileImageUrl =
+          environment.profileImageUrl + this.user.profileImageUrl;
+        console.log(this.enviromentProfileImageUrl);
       },
       error: (err) => {
         console.error('Error fetching user by token', err);

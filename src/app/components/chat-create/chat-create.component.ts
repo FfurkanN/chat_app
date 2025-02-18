@@ -27,9 +27,9 @@ export class ChatCreateComponent {
     userName: '',
     email: '',
     password: '',
-    chats: [],
     refreshToken: '',
     isOnline: false,
+    profileImageUrl: '',
   };
 
   chat: CreateChat = {

@@ -4,11 +4,11 @@
   <div class="flex flex-row items-center">
     <img
       class="size-8 rounded-full mr-3"
-      src="https://picsum.photos/200/300"
+      src="{{ profileImageApi + getSender(userId).profileImageUrl }}"
       alt="User profile image"
     />
     <span class="font-semibold text-base">
-      {{ getSenderName(message.sender_Id) }}
+      {{ getSender(message.sender_Id).userName }}
     </span>
     <span class="ml-3 dark:text-white/30 text-sm font-light">
       {{ getSendTime(message.send_Date) }}
