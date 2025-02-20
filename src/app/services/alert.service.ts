@@ -1,21 +1,33 @@
 import { Injectable } from '@angular/core';
 import { Alert } from '../models/alert';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AlertService {
+  private alerts: Alert[] = [];
+  private alertSubject = new BehaviorSubject<Alert[]>([]);
+  alert$ = this.alertSubject.asObservable();
+
   constructor() {}
 
   createAlert(alert: Alert): void {
-    if (alert.alertType === 'error') {
-      console.log('ERROR');
+    this.alerts.unshift(alert);
+
+    if (this.alerts.length > 5) {
+      this.alerts.pop();
     }
-    if (alert.alertType === 'information') {
-      console.log('INFORMATIN');
-    }
-    if (alert.alertType === 'success') {
-      console.log('SUCCESS');
-    }
+
+    this.alertSubject.next([...this.alerts]);
+
+    setTimeout(() => {
+      this.dismissAlert(alert);
+    }, 5000);
+  }
+
+  dismissAlert(alert: Alert): void {
+    this.alerts = this.alerts.filter((a) => a !== alert);
+    this.alertSubject.next([...this.alerts]);
   }
 }

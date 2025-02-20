@@ -12,7 +12,11 @@ import { adminGuard } from './admin.guard';
 
 export const routes: Routes = [
   { path: '', component: ChatPageComponent, canActivate: [authGuard] },
-  { path: 'chat', component: ChatPageComponent, canActivate: [authGuard] },
+  {
+    path: 'chat',
+    component: ChatPageComponent,
+    canActivate: [authGuard],
+  },
   { path: 'login', component: LoginPageComponent },
   {
     path: 'register',
@@ -20,12 +24,24 @@ export const routes: Routes = [
   },
   {
     path: 'profile',
-    component: ProfilePageComponent,
+    loadComponent: () =>
+      import('./pages/profile-page/profile-page.component').then(
+        (c) => c.ProfilePageComponent
+      ),
     children: [
-      { path: 'info/:id', component: ProfileInformationComponent },
+      {
+        path: 'info/:id',
+        loadComponent: () =>
+          import(
+            './profile-components/profile-information/profile-information.component'
+          ).then((c) => c.ProfileInformationComponent),
+      },
       {
         path: 'settings/:id',
-        component: ProfileSettingsComponent,
+        loadComponent: () =>
+          import(
+            './profile-components/profile-settings/profile-settings.component'
+          ).then((c) => c.ProfileSettingsComponent),
         canActivate: [authGuard],
       },
       { path: '', redirectTo: 'info', pathMatch: 'full' },

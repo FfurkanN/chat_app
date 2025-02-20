@@ -14,11 +14,6 @@ export const ErrorInterceptor = (
 ): Observable<HttpEvent<any>> => {
   const authService = inject(AuthService);
 
-  // console.log('Error-Interceptor request captured ', req);
-  // authService.refreshToken().subscribe((response) => {
-  //   console.log('response', response);
-  // });
-
   return next(req).pipe(
     catchError((error) => {
       console.log('ERROR', error);
@@ -26,7 +21,6 @@ export const ErrorInterceptor = (
         console.error('401 Error');
         if (!req.url.includes('/login')) {
           authService.refreshToken().subscribe((response) => {
-            console.log('response', response);
             localStorage.setItem('accessToken', response.accessToken);
             localStorage.setItem('refreshToken', response.refreshToken);
           });

@@ -39,7 +39,6 @@ export class ProfileInformationComponent implements OnInit {
         this.user = res[0];
         this.enviromentProfileImageUrl =
           environment.profileImageUrl + this.user.profileImageUrl;
-        console.log(this.user);
       },
       error: (err) => {
         console.error('Error fetching user by id', err);

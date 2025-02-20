@@ -1,52 +1,28 @@
-<div class="flex">
-  <div class="z-20 absolute right-0 m-2">
-    <!-- <app-alert-danger /> -->
-  </div>
+@if(isCreatingChat){
+<app-chat-create (chatForCreationEventEmitter)="handleChatCreation($event)" />
+}
 
-  @if(isCreatingChat){
-  <app-chat-create
-    (closeChatCreatingWindow)="handleChildEvent($event)"
-    (chatForCreationEventEmitter)="handleChatCreation($event)"
+<div class="flex flex-row w-screen h-screen">
+  <app-sidebar [chats]="chats" (setChatEventEmitter)="setCurrentChat($event)" />
+
+  @if(!isVideoChat){
+  <div class="flex flex-col w-full h-full justify-between">
+    @if(isLoadingMessages){
+    <p>Loading</p>
+    } @else { @if(currentChatId){
+    <app-chat-message
+      [messages]="messages"
+      [usersInChat]="usersInChat"
+      [currentChatId]="currentChatId"
+    />
+    } }
+  </div>
+  @if(currentChatId){
+  <app-users-bar [users]="usersInChat" />
+  } }@else{
+  <app-video-chat
+    class="grow"
+    (closeVideoChatEventEventEvmitter)="openVideoChat($event)"
   />
   }
-  <div class="flex flex-row w-screen h-screen">
-    <app-sidebar
-      (openChatCreateWindow)="handleChildEvent($event)"
-      (Chat)="handleChatEvent($event)"
-      (userIdEmitter)="handleUserIdEvent($event)"
-      [chats]="chats"
-    />
-
-    @if(!isVideoChat){
-    <div class="flex flex-col w-full h-screen justify-between">
-      <div
-        #chatContainer
-        class="flex flex-col max-h-screen overflow-y-auto p-3 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
-      >
-        @if(isLoadingMessages){
-        <p>Loading</p>
-        } @else { @if(messages.length !== 0){
-        <app-chat-message
-          [messages]="messages"
-          [userId]="currentUser.id"
-          [users]="usersInChat"
-        />
-        } }
-      </div>
-      @if(currentChatId){
-      <app-chat-textbox
-        (sendMessage)="handleMessageEvent($event)"
-        (openVideoChatEventEmitter)="openVideoChat($event)"
-      />
-      }
-    </div>
-    @if(currentChatId){
-    <app-users-bar [users]="usersInChat" />
-    } }@else{
-    <app-video-chat
-      class="grow"
-      (closeVideoChatEventEventEvmitter)="openVideoChat($event)"
-    />
-    }
-  </div>
 </div>

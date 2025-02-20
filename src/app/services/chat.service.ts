@@ -8,6 +8,7 @@ import { CreateChat } from '../models/chat-create';
 import { DeleteChat } from '../models/chat-delete';
 import { Message } from '../models/message';
 import { MessageSendModel } from '../models/message-send';
+import { UserChatModel } from '../models/user-chat';
 
 @Injectable({
   providedIn: 'root',
@@ -15,13 +16,10 @@ import { MessageSendModel } from '../models/message-send';
 export class ChatService {
   constructor(private httpClient: HttpClient) {}
 
-  getUserChats(user: User): Observable<Chat[]> {
-    return this.httpClient.get<Chat[]>(
-      environment.apiUrl + `/Chat/GetChats/?userId=${user.id}`
-    );
+  getUserChats(): Observable<Chat[]> {
+    return this.httpClient.get<Chat[]>(environment.apiUrl + `/Chat/GetChats/`);
   }
   createChat(createChat: CreateChat): Observable<Chat> {
-    console.log('Create', createChat);
     return this.httpClient.post<Chat>(
       environment.apiUrl + '/Chat/Create',
       createChat
@@ -48,6 +46,21 @@ export class ChatService {
     return this.httpClient.post<Message>(
       `${environment.apiUrl}/Chat/SendMessage`,
       message
+    );
+  }
+  updateUnreadMessageCount(
+    chatId: string,
+    count: number
+  ): Observable<UserChatModel> {
+    return this.httpClient.post<UserChatModel>(
+      `${environment.apiUrl}/Chat/UpdateUnreadMessageCount`,
+      { chatId, count }
+    );
+  }
+
+  getUnreadMessageCount(chatId: string): Observable<number> {
+    return this.httpClient.get<number>(
+      `${environment.apiUrl}/Chat/GetUnreadMessageCount/?chatId=${chatId}`
     );
   }
 }

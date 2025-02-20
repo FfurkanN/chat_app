@@ -29,7 +29,6 @@ export class ProfilePageComponent implements OnInit {
   ngOnInit(): void {
     this.route.firstChild?.params.subscribe((params) => {
       this.userId = params['id'];
-      console.log(this.userId);
     });
     // this.getUserById();
   }

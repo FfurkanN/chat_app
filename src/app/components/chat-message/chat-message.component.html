@@ -1,28 +1,68 @@
-@for (message of messages; track message.id;let index = $index) {
-<div class="flex flex-col items-start dark:text-white text-black mx-8">
-  @if (index === 0 || messages[index - 1].sender_Id !== message.sender_Id) {
-  <div class="flex flex-row items-center">
-    <img
-      class="size-8 rounded-full mr-3"
-      src="{{ profileImageApi + getSender(userId).profileImageUrl }}"
-      alt="User profile image"
-    />
-    <span class="font-semibold text-base">
-      {{ getSender(message.sender_Id).userName }}
-    </span>
-    <span class="ml-3 dark:text-white/30 text-sm font-light">
-      {{ getSendTime(message.send_Date) }}
-    </span>
-  </div>
-  }
-  <div class="flex flex-col ml-10">
-    @if (message.messageType === 'text') {
-    <p class="p-2 text-base font-normal dark:text-white/80">
-      {{ message.content }}
-    </p>
-    } @if (message.messageType === 'image') {
-    <img class="size-10/12" src="{{ message.file_Url }}" alt="" />
+<div class="flex flex-col justify-between h-screen">
+  <div
+    #chatContainer
+    class="flex flex-col overflow-y-auto p-3 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
+  >
+    <button (click)="scrollToBottom()">SCROLL</button>
+    @for (message of messages; track message.id;let index = $index) {
+    {{ scrollToBottom() }}
+    <div class="flex flex-col items-start dark:text-white text-black mx-8">
+      @if (index === 0 || messages[index - 1].sender_Id !== message.sender_Id) {
+      <div class="flex flex-row items-center">
+        <img
+          class="size-8 rounded-full mr-3"
+          src="{{
+            profileImageApi + getSender(message.sender_Id).profileImageUrl
+          }}"
+          alt="User profile image"
+        />
+        <span class="font-semibold text-base">
+          {{ getSender(message.sender_Id).userName }}
+        </span>
+        <span class="ml-3 dark:text-white/30 text-sm font-light">
+          {{ getSendTime(message.send_Date) }}
+        </span>
+      </div>
+      }
+      <div class="flex flex-col ml-10">
+        @if (message.messageType === 'text') {
+        <p class="p-2 text-base font-normal dark:text-white/80">
+          {{ message.content }}
+        </p>
+        } @if (message.messageType === 'image') {
+        <img class="size-10/12" src="{{ message.file_Url }}" alt="" />
+        }
+      </div>
+    </div>
     }
   </div>
+
+  <div
+    class="w-full bg-slate-300 dark:bg-stone-900/50 flex flex-row items-center p-2"
+  >
+    <button class="ring-2 ring-white rounded mr-2 px-2">
+      <svg
+        viewBox="0 0 32 32"
+        xmlns="http://www.w3.org/2000/svg"
+        class="size-8 fill-white/90"
+      >
+        <title>video-camera</title>
+        <path
+          d="M30.658 5.937c-0.187-0.117-0.414-0.186-0.658-0.186-0.204 0-0.396 0.048-0.566 0.135l0.007-0.003-6.351 3.174c-0.414-1.342-1.641-2.302-3.093-2.307h-15.997c-1.794 0.002-3.248 1.456-3.25 3.25v12.001c0.002 1.794 1.456 3.248 3.25 3.25h15.996c1.453-0.005 2.68-0.964 3.088-2.284l0.006-0.023 6.351 3.174c0.161 0.084 0.352 0.133 0.555 0.133 0.001 0 0.003 0 0.004 0h-0c0.69-0 1.25-0.56 1.25-1.25v-18c-0-0.447-0.234-0.839-0.587-1.060l-0.005-0.003zM20.746 22c-0 0.414-0.336 0.75-0.75 0.75h-15.996c-0.414-0-0.75-0.336-0.75-0.75v-12.001c0.001-0.414 0.336-0.749 0.75-0.75h15.996c0.414 0 0.75 0.336 0.75 0.75v12.001zM28.75 22.979l-5.504-2.752v-8.454l5.504-2.75z"
+        ></path>
+      </svg>
+    </button>
+
+    <textarea
+      type="text"
+      class="w-full appearance-none outline-none max-h-10 min-h-10 p-1 dark:bg-stone-700 bg-white dark:text-white text-black rounded-md overflow-hidden"
+      [(ngModel)]="messageToSend.content"
+    ></textarea>
+    <button
+      class="dark:bg-gray-700 rounded-md px-10 py-2 ml-3 dark:hover:bg-gray-600 text-black dark:text-white"
+      (click)="sendMessage(messageToSend)"
+    >
+      Send
+    </button>
+  </div>
 </div>
-}

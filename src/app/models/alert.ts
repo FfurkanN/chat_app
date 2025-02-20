@@ -1,4 +1,4 @@
 export interface Alert {
-  alertType: string;
-  content: string;
+  message: string;
+  alertType: 'error' | 'success' | 'information';
 }

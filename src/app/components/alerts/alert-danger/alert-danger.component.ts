@@ -7,4 +7,4 @@ import { Component, Inject, Injectable, OnInit } from '@angular/core';
   templateUrl: './alert-danger.component.html',
   styleUrl: './alert-danger.component.css',
 })
-export class AlertDangerComponent {}
+export class DangerAlertComponent {}

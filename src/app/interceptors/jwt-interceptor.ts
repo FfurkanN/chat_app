@@ -19,7 +19,5 @@ export const JWTInterceptor = (
     return next(req);
   }
 
-  console.log('HTTP request captured ', req);
-
   return next(req);
 };

@@ -8,11 +8,7 @@ import { environmentSignal } from '../../environments/environment';
 })
 export class SignalChatService {
   private hubConnection!: signalR.HubConnection;
-  private localStream!: MediaStream;
-  private peerConnections: { [key: string]: RTCPeerConnection } = {};
-  private readonly configuration = {
-    iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
-  };
+  private isConnected: boolean = false;
 
   constructor() {}
 
@@ -25,8 +21,7 @@ export class SignalChatService {
     this.hubConnection
       .start()
       .then(() => {
-        console.log('Hub connection started');
-
+        this.isConnected = true;
         this.hubConnection
           .invoke('Connect', userId)
           .catch((err) => console.error(err));

@@ -41,10 +41,6 @@ export class UserService {
   uploadProfilePicture(file: File, userId: string): Observable<User> {
     const formData = new FormData();
     formData.append('file', file);
-    // formData.append('userId', userId);
-
-    console.log(formData.getAll('file'));
-    // console.log(formData.getAll('userId'));
 
     return this.httpClient.post<User>(
       `${environment.apiUrl}/User/UploadProfileImage`,
