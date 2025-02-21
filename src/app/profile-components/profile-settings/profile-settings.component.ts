@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { UserService } from '../../services/user.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../../models/user';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-profile-settings',
@@ -28,7 +29,9 @@ export class ProfileSettingsComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private route: ActivatedRoute
+    private alertService: AlertService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -37,22 +40,40 @@ export class ProfileSettingsComponent implements OnInit {
   }
 
   onFileSelected(event: any) {
-    if (event.target.files) {
+    if (event.target.files && event.target.files[0]) {
       this.selectedFile = event.target.files[0];
+
+      if (this.selectedFile) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.uploadedFileUrl = e.target.result;
+        };
+        reader.readAsDataURL(this.selectedFile);
+      }
     }
   }
+
   uploadProfileImage() {
     if (this.selectedFile) {
       this.userService
         .uploadProfilePicture(this.selectedFile, this.user.id)
         .subscribe({
-          next(res) {
+          next: (res) => {
             console.log(res);
+            this.createUploadedAlert();
+            this.router.navigate(['/profile/info', this.user.id]);
           },
           error(err) {
             console.error(err);
           },
         });
     }
+  }
+
+  createUploadedAlert() {
+    this.alertService.createAlert({
+      message: 'Profile image changed successfully!',
+      alertType: 'success',
+    });
   }
 }

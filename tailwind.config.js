@@ -1,7 +1,9 @@
 /** @type {import('tailwindcss').Config} */
-export const darkMode = "selector";
-export const content = ["./src/**/*.{html,ts}"];
-export const theme = {
-  extend: {},
+export default {
+  darkMode: ["class", '[data-theme="dark"]'],
+  content: ["./src/**/*.{html,ts}"],
+  theme: {
+    extend: {},
+  },
+  plugins: [require("daisyui")],
 };
-export const plugins = [];

@@ -20,7 +20,10 @@
     </a>
     <ul class="space-y-2 font-medium">
       @for (chat of chats; track chat.id) {
-      <li (click)="setChat(chat.id)">
+      <li
+        (click)="setChat(chat.id)"
+        [ngClass]="{ 'border-l-2 border-sky-600': currentChatId == chat.id }"
+      >
         <div
           href="#"
           class="flex items-center justify-between p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-stone-800 group cursor-pointer h-full"
@@ -38,6 +41,7 @@
           }
         </div>
       </li>
+
       }
       <!-- (click)="openChatCreate()" -->
       <li (click)="toggleChatCreate(true)">

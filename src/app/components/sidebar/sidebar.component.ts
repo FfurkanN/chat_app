@@ -84,6 +84,7 @@ export class SidebarComponent implements OnInit {
   }
 
   setChat(chatId: string): void {
+    this.currentChatId = chatId;
     this.setChatEventEmitter.emit(chatId);
   }
 

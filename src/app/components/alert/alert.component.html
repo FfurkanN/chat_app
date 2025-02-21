@@ -20,7 +20,7 @@
     </svg>
     <span class="sr-only">Error icon</span>
   </div>
-  <div class="ms-3 text-sm font-normal">Item has been deleted.</div>
+  <div class="ms-3 text-sm font-normal">{{ alert.message }}</div>
   } @if(alert.alertType == "information"){
   <div
     class="inline-flex items-center justify-center shrink-0 w-8 h-8 text-orange-500 bg-orange-100 rounded-lg dark:bg-orange-700 dark:text-orange-200"
@@ -38,7 +38,7 @@
     </svg>
     <span class="sr-only">Warning icon</span>
   </div>
-  <div class="ms-3 text-sm font-normal">Improve password difficulty.</div>
+  <div class="ms-3 text-sm font-normal">{{ alert.message }}</div>
   } @if(alert.alertType == "success"){
 
   <div
@@ -57,7 +57,7 @@
     </svg>
     <span class="sr-only">Check icon</span>
   </div>
-  <div class="ms-3 text-sm font-normal">Item moved successfully.</div>
+  <div class="ms-3 text-sm font-normal">{{ alert.message }}</div>
   }
 
   <button

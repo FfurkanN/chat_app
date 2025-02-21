@@ -1,9 +1,55 @@
-<div class="flex flex-col justify-between h-screen">
+<div
+  class="grid grid-cols-10 grid-rows-10 gap-0 h-screen w-full dark:bg-stone-800"
+>
+  <div class="col-span-10 navbar w-full border-b-2 border-stone-900 bg-inherit">
+    <div class="flex-1">
+      <span>{{ currentChatId }}</span>
+    </div>
+    <div class="flex-none gap-2">
+      <div class="form-control">
+        <input
+          type="text"
+          placeholder="Search"
+          class="input input-bordered w-24 md:w-auto"
+        />
+      </div>
+      <div class="dropdown dropdown-end">
+        <label class="swap swap-rotate">
+          <input type="checkbox" class="theme-controller" value="synthwave" />
+
+          <!-- sun icon -->
+          <svg
+            class="swap-off h-10 w-10 fill-current"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z"
+            />
+          </svg>
+
+          <!-- moon icon -->
+          <svg
+            class="swap-on h-10 w-10 fill-current"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z"
+            />
+          </svg>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat Container -->
+  @if(currentChatId){
+
   <div
     #chatContainer
-    class="flex flex-col overflow-y-auto p-3 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
+    class="col-span-8 row-span-8 row-start-2 flex flex-col overflow-y-scroll p-3 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-stone-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:[&::-webkit-scrollbar-thumb]:rounded-sm"
   >
-    <button (click)="scrollToBottom()">SCROLL</button>
     @for (message of messages; track message.id;let index = $index) {
     {{ scrollToBottom() }}
     <div class="flex flex-col items-start dark:text-white text-black mx-8">
@@ -37,32 +83,64 @@
     }
   </div>
 
-  <div
-    class="w-full bg-slate-300 dark:bg-stone-900/50 flex flex-row items-center p-2"
+  <!-- Bottom Textbox -->
+  <form
+    class="col-span-8 col-start-1 row-start-10 dark:bg-stone-900/80 flex flex-row justify-between items-center m-3 rounded-xl h-fit"
+    (ngSubmit)="sendMessage(messageToSend)"
   >
-    <button class="ring-2 ring-white rounded mr-2 px-2">
+    <button
+      class="fill-stone-900/80 hover:fill-stone-800 hover:bg-stone-800 ml-2 rounded-md p-1"
+    >
       <svg
-        viewBox="0 0 32 32"
+        class="size-9 fill-inherit"
+        viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
-        class="size-8 fill-white/90"
       >
-        <title>video-camera</title>
+        <rect width="24" height="24" fill="none" />
         <path
-          d="M30.658 5.937c-0.187-0.117-0.414-0.186-0.658-0.186-0.204 0-0.396 0.048-0.566 0.135l0.007-0.003-6.351 3.174c-0.414-1.342-1.641-2.302-3.093-2.307h-15.997c-1.794 0.002-3.248 1.456-3.25 3.25v12.001c0.002 1.794 1.456 3.248 3.25 3.25h15.996c1.453-0.005 2.68-0.964 3.088-2.284l0.006-0.023 6.351 3.174c0.161 0.084 0.352 0.133 0.555 0.133 0.001 0 0.003 0 0.004 0h-0c0.69-0 1.25-0.56 1.25-1.25v-18c-0-0.447-0.234-0.839-0.587-1.060l-0.005-0.003zM20.746 22c-0 0.414-0.336 0.75-0.75 0.75h-15.996c-0.414-0-0.75-0.336-0.75-0.75v-12.001c0.001-0.414 0.336-0.749 0.75-0.75h15.996c0.414 0 0.75 0.336 0.75 0.75v12.001zM28.75 22.979l-5.504-2.752v-8.454l5.504-2.75z"
-        ></path>
+          d="M5 18H15C16.1046 18 17 17.1046 17 16V8.57143V8C17 6.89543 16.1046 6 15 6H5C3.89543 6 3 6.89543 3 8V16C3 17.1046 3.89543 18 5 18Z"
+          class="stroke-sky-600 stroke-2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+
+        <path
+          d="M17 10L21 7V17L17 14"
+          class="stroke-sky-600 stroke-2"
+          stroke-linejoin="round"
+        />
       </svg>
     </button>
-
-    <textarea
+    <input
       type="text"
-      class="w-full appearance-none outline-none max-h-10 min-h-10 p-1 dark:bg-stone-700 bg-white dark:text-white text-black rounded-md overflow-hidden"
+      placeholder="Type here"
+      class="input outline-none focus:outline-none w-full bg-stone-900/80 border-none"
       [(ngModel)]="messageToSend.content"
-    ></textarea>
+    />
+
     <button
-      class="dark:bg-gray-700 rounded-md px-10 py-2 ml-3 dark:hover:bg-gray-600 text-black dark:text-white"
+      class="fill-stone-900/80 hover:fill-stone-800 hover:bg-stone-800 mx-2 rounded-md p-1"
+      type="submit"
       (click)="sendMessage(messageToSend)"
     >
-      Send
+      <svg
+        class="size-8 fill-inherit stroke-sky-600 stroke-2"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M11.5003 12H5.41872M5.24634 12.7972L4.24158 15.7986C3.69128 17.4424 3.41613 18.2643 3.61359 18.7704C3.78506 19.21 4.15335 19.5432 4.6078 19.6701C5.13111 19.8161 5.92151 19.4604 7.50231 18.7491L17.6367 14.1886C19.1797 13.4942 19.9512 13.1471 20.1896 12.6648C20.3968 12.2458 20.3968 11.7541 20.1896 11.3351C19.9512 10.8529 19.1797 10.5057 17.6367 9.81135L7.48483 5.24303C5.90879 4.53382 5.12078 4.17921 4.59799 4.32468C4.14397 4.45101 3.77572 4.78336 3.60365 5.22209C3.40551 5.72728 3.67772 6.54741 4.22215 8.18767L5.24829 11.2793C5.34179 11.561 5.38855 11.7019 5.407 11.8459C5.42338 11.9738 5.42321 12.1032 5.40651 12.231C5.38768 12.375 5.34057 12.5157 5.24634 12.7972Z"
+          class="fill-stone-900"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
     </button>
-  </div>
+  </form>
+  <!-- APP Users Bar -->
+  <app-users-bar
+    class="row-span-9 col-span-2 col-start-9 row-start-2 h-full"
+    [users]="usersInChat"
+  />
+  }
 </div>

@@ -10,11 +10,12 @@ import { MessageSendModel } from '../../models/message-send';
 import { FormsModule } from '@angular/forms';
 import { SignalChatService } from '../../services/signal-chat.service';
 import { UserService } from '../../services/user.service';
+import { UsersBarComponent } from '../users-bar/users-bar.component';
 
 @Component({
   selector: 'app-chat-message',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, UsersBarComponent],
   templateUrl: './chat-message.component.html',
   styleUrl: './chat-message.component.css',
 })

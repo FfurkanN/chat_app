@@ -14,8 +14,6 @@ import { CreateChat } from '../../models/chat-create';
 })
 export class ChatCreateComponent {
   @Output() closeChatCreatingWindow: EventEmitter<boolean> = new EventEmitter();
-  @Output() chatForCreationEventEmitter: EventEmitter<CreateChat> =
-    new EventEmitter();
 
   users: User[] = [];
 
@@ -34,7 +32,6 @@ export class ChatCreateComponent {
 
   chat: CreateChat = {
     chatName: '',
-    creatorId: '',
     members: [],
     isPublic: false,
   };
@@ -60,15 +57,21 @@ export class ChatCreateComponent {
     }
     this.users.push(this.userByDb);
     this.chat.members.push(this.userByDb.id);
-    console.log('Users:', this.userByDb);
   }
 
   closeChatCreate(): void {
     this.closeChatCreatingWindow.emit(false);
   }
   createChat(): void {
-    this.chatForCreationEventEmitter.emit(this.chat);
-    this.closeChatCreate();
+    this.chatService.createChat(this.chat).subscribe({
+      next: (res) => {
+        this.closeChatCreate();
+        console.log(res);
+      },
+      error: (err) => {
+        console.error('Create chat error', err);
+      },
+    });
   }
 
   getUserByUsername(): void {

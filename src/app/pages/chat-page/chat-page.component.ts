@@ -148,17 +148,6 @@ export class ChatPageComponent implements OnInit {
     });
   }
 
-  handleChatCreation(value: CreateChat): void {
-    value.creatorId = this.currentUser.id;
-    this.chatService.createChat(value).subscribe({
-      next: (res) => {
-        this.isCreatingChat = false;
-      },
-      error: (err) => {
-        console.error('Create chat error', err);
-      },
-    });
-  }
   openVideoChat(value: boolean): void {
     this.isVideoChat = value;
   }
