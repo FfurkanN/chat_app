@@ -4,4 +4,6 @@ export interface Chat {
   creator_Id: string;
   create_date: Date;
   unreadMessageCount: number;
+  userCount: number;
+  onlineUserCount: number;
 }

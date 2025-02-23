@@ -2,7 +2,7 @@
 <app-chat-create />
 }
 
-<div class="flex flex-row w-screen h-screen">
+<div class="flex flex-row w-screen h-screen overflow-hidden">
   <app-sidebar [chats]="chats" (setChatEventEmitter)="setCurrentChat($event)" />
 
   <div class="flex flex-row w-full h-full">

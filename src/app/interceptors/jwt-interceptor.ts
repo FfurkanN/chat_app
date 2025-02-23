@@ -15,7 +15,7 @@ export const JWTInterceptor = (
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
     });
-    console.log('HTTP request captured ', req);
+    // console.log('HTTP request captured ', req);
     return next(req);
   }
 

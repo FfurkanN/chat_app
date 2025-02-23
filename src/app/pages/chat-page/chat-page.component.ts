@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatMessageComponent } from '../../components/chat-message/chat-message.component';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
-import { UsersBarComponent } from '../../components/users-bar/users-bar.component';
 import { User } from '../../models/user';
 import { ChatCreateComponent } from '../../components/chat-create/chat-create.component';
 import { Chat } from '../../models/chat';
@@ -9,7 +8,6 @@ import { Message } from '../../models/message';
 import { ChatService } from '../../services/chat.service';
 import { SignalChatService } from '../../services/signal-chat.service';
 import { UserService } from '../../services/user.service';
-import { CreateChat } from '../../models/chat-create';
 import { VideoChatComponent } from '../../components/video-chat/video-chat.component';
 import { ActivatedRoute } from '@angular/router';
 
@@ -19,7 +17,6 @@ import { ActivatedRoute } from '@angular/router';
   imports: [
     ChatMessageComponent,
     SidebarComponent,
-    UsersBarComponent,
     ChatCreateComponent,
     VideoChatComponent,
   ],
@@ -80,7 +77,7 @@ export class ChatPageComponent implements OnInit {
   }
 
   connect(): void {
-    this.signalChatService.startConnection(this.currentUser.id);
+    // this.signalChatService.startConnection(this.currentUser.id);
 
     this.signalChatService.userConnected((userId: string) => {
       console.log('User connected', userId);
@@ -109,6 +106,7 @@ export class ChatPageComponent implements OnInit {
   getUserChats(): void {
     this.chatService.getUserChats().subscribe({
       next: (res) => {
+        console.log(res);
         this.chats = res;
       },
       error: (err) => {

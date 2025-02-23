@@ -22,11 +22,15 @@
             src="{{ profileImageApi + user.profileImageUrl }}"
             alt=""
           />
-          @if(user.isOnline){
-          <span class="ms-3 text-gray-200">{{ user.userName }}</span>
-          }@else{
-          <span class="ms-3 text-stone-600">{{ user.userName }}</span>
-          }
+          <span
+            class="ms-3"
+            [ngClass]="{
+              'text-stone-600': !user.isOnline,
+              'text-gray-200': user.isOnline
+            }"
+          >
+            {{ user.userName }}
+          </span>
         </div>
       </li>
 

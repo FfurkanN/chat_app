@@ -2,17 +2,24 @@ import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { Message } from '../models/message';
 import { environmentSignal } from '../../environments/environment';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SignalChatService {
   private hubConnection!: signalR.HubConnection;
-  private isConnected: boolean = false;
 
-  constructor() {}
+  constructor(private userService: UserService) {}
 
-  startConnection(userId: string) {
+  userId: string = '';
+
+  startConnection() {
+    this.userService.getUserByToken().subscribe({
+      next: (res) => {
+        this.userId = res.id;
+      },
+    });
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(environmentSignal.apiUrl)
       .withAutomaticReconnect()
@@ -21,9 +28,8 @@ export class SignalChatService {
     this.hubConnection
       .start()
       .then(() => {
-        this.isConnected = true;
         this.hubConnection
-          .invoke('Connect', userId)
+          .invoke('Connect', this.userId)
           .catch((err) => console.error(err));
       })
       .catch((err) => {

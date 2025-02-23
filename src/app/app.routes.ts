@@ -44,6 +44,14 @@ export const routes: Routes = [
           ).then((c) => c.ProfileSettingsComponent),
         canActivate: [authGuard],
       },
+      {
+        path: 'chats/:id',
+        loadComponent: () =>
+          import(
+            './profile-components/profile-chats/profile-chats.component'
+          ).then((c) => c.ProfileChatsComponent),
+        canActivate: [authGuard],
+      },
       { path: '', redirectTo: 'info', pathMatch: 'full' },
     ],
   },

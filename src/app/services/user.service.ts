@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { User } from '../models/user';
 import { environment } from '../../environments/environment';
 import { Chat } from '../models/chat';
-import { Username } from '../models/username';
 
 @Injectable({
   providedIn: 'root',
@@ -17,11 +16,24 @@ export class UserService {
       environment.apiUrl + '/Auth/GetUserByToken'
     );
   }
-  getUserChats(user: User): Observable<Chat[]> {
+  getChatsOwnedByUser(): Observable<Chat[]> {
     return this.httpClient.get<Chat[]>(
-      `${environment.apiUrl}/Chat/GetChats/?userId=${user.id}`
+      `${environment.apiUrl}/User/GetOwnedChats`
     );
   }
+
+  getUserCountByChatId(chatId: string): Observable<number> {
+    return this.httpClient.get<number>(
+      `${environment.apiUrl}/User/GetUserCountByChatId?chatId=${chatId}`
+    );
+  }
+
+  GetOnlineUserCountByChatId(chatId: string): Observable<number> {
+    return this.httpClient.get<number>(
+      `${environment.apiUrl}/User/GetOnlineUserCountByChatId?chatId=${chatId}`
+    );
+  }
+
   getUserByUsername(username: string): Observable<User | undefined> {
     return this.httpClient.get<User | undefined>(
       `${environment.apiUrl}/User/GetUserByUsername/?username=${username}`

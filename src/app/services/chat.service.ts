@@ -16,6 +16,12 @@ import { UserChatModel } from '../models/user-chat';
 export class ChatService {
   constructor(private httpClient: HttpClient) {}
 
+  getChatById(chatId: string): Observable<Chat> {
+    return this.httpClient.get<Chat>(
+      `${environment.apiUrl}/Chat/GetChatById?chatId=${chatId}`
+    );
+  }
+
   getUserChats(): Observable<Chat[]> {
     return this.httpClient.get<Chat[]>(environment.apiUrl + `/Chat/GetChats/`);
   }
@@ -48,6 +54,20 @@ export class ChatService {
       message
     );
   }
+
+  uploadChatFile(
+    file: File
+  ): Observable<{ fileName: string; fileSize: number; fileUrl: string }> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.httpClient.post<{
+      fileName: string;
+      fileSize: number;
+      fileUrl: string;
+    }>(`${environment.apiUrl}/Chat/UploadChatFile`, formData);
+  }
+
   updateUnreadMessageCount(
     chatId: string,
     count: number

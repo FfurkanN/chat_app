@@ -4,7 +4,9 @@ export interface Message {
   sender_Id: string;
   messageType: string;
   content: string;
-  file_Url: string;
+  fileName: string;
+  fileUrl: string;
+  fileSize: number;
   send_Date: Date;
   receive_Date: Date;
 }
