@@ -1,41 +1,61 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LoginRequest } from '../../models/login-request';
-import { Observable, map, throwError } from 'rxjs';
+
+import { BehaviorSubject, Observable, map, throwError } from 'rxjs';
 import { LoginResponse } from '../../models/login-response';
 import { Router } from '@angular/router';
 import { RegisterRequest } from '../../models/register-request';
 import { environment } from '../../../environments/environment';
+import { LoginRequest } from '../models/login-req.model';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  private currentUserSubject = new BehaviorSubject<User | any>(null);
+  public currentUser$ = this.currentUserSubject.asObservable();
+
   private router: Router = new Router();
   constructor(private httpClient: HttpClient) {}
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
     return this.httpClient
-      .post<LoginResponse>(environment.apiUrl + '/Auth/Login', credentials)
+      .post<LoginResponse>(environment.apiUrl + '/Auth/Login', credentials, {
+        withCredentials: true,
+      })
       .pipe(
         map((response) => {
-          console.log('response', response);
-          localStorage.setItem('accessToken', response.accessToken);
-          localStorage.setItem('refreshToken', response.refreshToken);
-          // document.cookie = `refreshToken=${response.refreshToken};`;
-          this.router.navigate(['/chat']);
           return response;
         })
       );
   }
+
+  getUserData() {
+    return this.httpClient
+      .get(`${environment.apiUrl}/Auth/GetUserByToken`, {
+        withCredentials: true,
+      })
+      .subscribe({
+        next: (res) => {
+          this.currentUserSubject.next(res);
+          this.router.navigate(['/chat']);
+        },
+        error: (err) => {
+          console.error(err);
+        },
+      });
+  }
+
+  getCurrentUser(): User {
+    return this.currentUserSubject.value;
+  }
+
   register(credentials: RegisterRequest): Observable<LoginResponse> {
     return this.httpClient
       .post<LoginResponse>(environment.apiUrl + '/Auth/Register', credentials)
       .pipe(
         map((response) => {
-          console.log(response);
-          localStorage.setItem('accessToken', response.accessToken);
-          localStorage.setItem('refreshToken', response.refreshToken);
           this.router.navigate(['/chat']);
           return response;
         })

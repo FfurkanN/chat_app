@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AlertService } from './core/services/alert.service';
 import { Alert } from './models/alert';
 
 import { SignalChatService } from './core/services/signal-chat.service';
+import { AuthService } from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +13,16 @@ import { SignalChatService } from './core/services/signal-chat.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'chat_app';
 
-  constructor(private signalChatService: SignalChatService) {
+  constructor(
+    private signalChatService: SignalChatService,
+    private authService: AuthService
+  ) {
     // this.signalChatService.startConnection();
+  }
+  ngOnInit(): void {
+    this.authService.getUserData();
   }
 }

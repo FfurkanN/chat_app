@@ -12,12 +12,6 @@ import { Channel } from '../../models/channel';
 export class UserService {
   constructor(private httpClient: HttpClient) {}
 
-  getUserByToken(): Observable<User> {
-    return this.httpClient.get<User>(
-      environment.apiUrl + '/Auth/GetUserByToken'
-    );
-  }
-
   getUserChannels(): Observable<Channel[]> {
     return this.httpClient.get<Channel[]>(
       `${environment}/User/GetUserChannels`

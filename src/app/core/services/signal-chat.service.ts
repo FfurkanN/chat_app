@@ -15,26 +15,25 @@ export class SignalChatService {
   userId: string = '';
 
   startConnection() {
-    this.userService.getUserByToken().subscribe({
-      next: (res) => {
-        this.userId = res.id;
-      },
-    });
-    this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(environmentSignal.apiUrl)
-      .withAutomaticReconnect()
-      .build();
-
-    this.hubConnection
-      .start()
-      .then(() => {
-        this.hubConnection
-          .invoke('Connect', this.userId)
-          .catch((err) => console.error(err));
-      })
-      .catch((err) => {
-        console.error('Error while establishing connection', err);
-      });
+    // this.userService.getUserByToken().subscribe({
+    //   next: (res) => {
+    //     this.userId = res.id;
+    //   },
+    // });
+    // this.hubConnection = new signalR.HubConnectionBuilder()
+    //   .withUrl(environmentSignal.apiUrl)
+    //   .withAutomaticReconnect()
+    //   .build();
+    // this.hubConnection
+    //   .start()
+    //   .then(() => {
+    //     this.hubConnection
+    //       .invoke('Connect', this.userId)
+    //       .catch((err) => console.error(err));
+    //   })
+    //   .catch((err) => {
+    //     console.error('Error while establishing connection', err);
+    //   });
   }
 
   receiveMessage(callback: (message: Message) => void) {

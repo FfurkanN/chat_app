@@ -9,15 +9,15 @@ export const JWTInterceptor = (
 ): Observable<HttpEvent<any>> => {
   const authService = inject(AuthService);
 
-  if (authService.isLoggedIn()) {
-    req = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-      },
-    });
-    // console.log('HTTP request captured ', req);
-    return next(req);
-  }
+  // if (authService.isLoggedIn()) {
+  //   req = req.clone({
+  //     setHeaders: {
+  //       Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+  //     },
+  //   });
+  //   // console.log('HTTP request captured ', req);
+  //   return next(req);
+  // }
 
   return next(req);
 };
