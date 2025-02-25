@@ -1,0 +1,161 @@
+<div class="grid grid-cols-10 grid-rows-11 gap-0 h-full w-full">
+  <app-navbar class="col-span-10"></app-navbar>
+
+  <div
+    #chatContainer
+    class="col-span-8 row-span-9 row-start-2 pt-5 overflow-y-auto h-full [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-900 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700 [&::-webkit-scrollbar-thumb]:rounded-sm [&::-webkit-scrollbar-track]:rounded-sm"
+  >
+    <div
+      #chatMessage
+      class="flex flex-col items-start dark:text-white text-black mx-8"
+      (click)="scrollToBottom()"
+    >
+      <div class="flex flex-row items-center">
+        <img
+          class="size-8 rounded-full mr-3"
+          src="https://picsum.photos/200/300"
+          alt="User profile image"
+        />
+        <span class="font-semibold text-base"> Furkan </span>
+        <span class="ml-3 dark:text-white/30 text-sm font-light">
+          12.11.2024
+        </span>
+      </div>
+      <div class="flex flex-col ml-10">
+        <p class="p-2 text-base font-normal dark:text-white/80">
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quo,
+          distinctio.
+        </p>
+        <img class="w-1/2" src="https://picsum.photos/1920/1080" />
+      </div>
+    </div>
+    <div
+      #chatMessage
+      class="flex flex-col items-start dark:text-white text-black mx-8"
+    >
+      <div class="flex flex-row items-center">
+        <img
+          class="size-8 rounded-full mr-3"
+          src="https://picsum.photos/200/300"
+          alt="User profile image"
+        />
+        <span class="font-semibold text-base"> Furkan </span>
+        <span class="ml-3 dark:text-white/30 text-sm font-light">
+          12.11.2024
+        </span>
+      </div>
+      <div class="flex flex-col ml-10">
+        <p class="p-2 text-base font-normal dark:text-white/80">
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quo,
+          distinctio.
+        </p>
+        <img class="w-1/2" src="https://picsum.photos/1920/1080" />
+      </div>
+    </div>
+    <div
+      #chatMessage
+      class="flex flex-col items-start dark:text-white text-black mx-8"
+    >
+      <div class="flex flex-row items-center">
+        <img
+          class="size-8 rounded-full mr-3"
+          src="https://picsum.photos/200/300"
+          alt="User profile image"
+        />
+        <span class="font-semibold text-base"> Furkan </span>
+        <span class="ml-3 dark:text-white/30 text-sm font-light">
+          12.11.2024
+        </span>
+      </div>
+      <div class="flex flex-col ml-10">
+        <p class="p-2 text-base font-normal dark:text-white/80">
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quo,
+          distinctio.
+        </p>
+        <img class="w-1/2" src="https://picsum.photos/1920/1080" />
+      </div>
+    </div>
+  </div>
+  <form
+    class="col-span-8 col-start-1 row-start-11 dark:bg-stone-900 flex flex-row justify-between items-center m-3 rounded-xl h-fit"
+  >
+    <button
+      class="fill-stone-900/80 hover:fill-stone-800 hover:bg-stone-800 ml-2 rounded-md p-1"
+    >
+      <svg
+        class="size-9 fill-inherit"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect width="24" height="24" fill="none" />
+        <path
+          d="M5 18H15C16.1046 18 17 17.1046 17 16V8.57143V8C17 6.89543 16.1046 6 15 6H5C3.89543 6 3 6.89543 3 8V16C3 17.1046 3.89543 18 5 18Z"
+          class="stroke-sky-600 stroke-2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+
+        <path
+          d="M17 10L21 7V17L17 14"
+          class="stroke-sky-600 stroke-2"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </button>
+    <!-- Send File or Image Button -->
+    <input #fileInput type="file" class="hidden" />
+    <button
+      class="fill-stone-900/80 hover:fill-stone-800 hover:bg-stone-800 ml-2 rounded-md p-1"
+      (click)="fileInput.click()"
+    >
+      <svg
+        class="size-9 fill-inherit"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g id="Edit / Add_Plus_Circle">
+          <path
+            id="Vector"
+            d="M8 12H12M12 12H16M12 12V16M12 12V8M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z"
+            class="stroke-sky-600 stroke-2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </g>
+      </svg>
+    </button>
+    <div
+      class="bg-stone-800 rounded-md text-xs flex items-center my-1 p-1 truncate"
+    >
+      <button class="btn btn-xs btn-error mr-1">X</button>
+      File1
+    </div>
+    <input
+      type="text"
+      placeholder="Type here"
+      class="input outline-none focus:outline-none w-full dark:bg-stone-900/80 border-none"
+      name="messageContent"
+    />
+
+    <button
+      class="fill-stone-900/80 hover:fill-stone-800 hover:bg-stone-800 mx-2 rounded-md p-1"
+      type="submit"
+    >
+      <svg
+        class="size-8 fill-inherit stroke-sky-600 stroke-2"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M11.5003 12H5.41872M5.24634 12.7972L4.24158 15.7986C3.69128 17.4424 3.41613 18.2643 3.61359 18.7704C3.78506 19.21 4.15335 19.5432 4.6078 19.6701C5.13111 19.8161 5.92151 19.4604 7.50231 18.7491L17.6367 14.1886C19.1797 13.4942 19.9512 13.1471 20.1896 12.6648C20.3968 12.2458 20.3968 11.7541 20.1896 11.3351C19.9512 10.8529 19.1797 10.5057 17.6367 9.81135L7.48483 5.24303C5.90879 4.53382 5.12078 4.17921 4.59799 4.32468C4.14397 4.45101 3.77572 4.78336 3.60365 5.22209C3.40551 5.72728 3.67772 6.54741 4.22215 8.18767L5.24829 11.2793C5.34179 11.561 5.38855 11.7019 5.407 11.8459C5.42338 11.9738 5.42321 12.1032 5.40651 12.231C5.38768 12.375 5.34057 12.5157 5.24634 12.7972Z"
+          class="fill-stone-900"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </button>
+  </form>
+  <app-chat-users class="col-span-2 row-span-10 col-start-9 row-start-2">
+  </app-chat-users>
+</div>

@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 import { User } from '../../models/user';
 import { formatDistanceToNow } from 'date-fns';
 import { environment } from '../../../environments/environment';
-import { ChatService } from '../../services/chat.service';
+import { ChatService } from '../../core/services/chat.service';
 import { MessageSendModel } from '../../models/message-send';
 import { FormsModule } from '@angular/forms';
 import { UsersBarComponent } from '../users-bar/users-bar.component';

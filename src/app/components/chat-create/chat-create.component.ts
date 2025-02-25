@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { User } from '../../models/user';
 import { FormsModule } from '@angular/forms';
-import { UserService } from '../../services/user.service';
-import { ChatService } from '../../services/chat.service';
+import { UserService } from '../../core/services/user.service';
+import { ChatService } from '../../core/services/chat.service';
 import { CreateChat } from '../../models/chat-create';
 
 @Component({

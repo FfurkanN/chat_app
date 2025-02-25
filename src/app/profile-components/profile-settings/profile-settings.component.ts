@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../core/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../../models/user';
-import { AlertService } from '../../services/alert.service';
+import { AlertService } from '../../core/services/alert.service';
 
 @Component({
   selector: 'app-profile-settings',

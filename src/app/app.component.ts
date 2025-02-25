@@ -1,30 +1,21 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { AlertService } from './services/alert.service';
+import { AlertService } from './core/services/alert.service';
 import { Alert } from './models/alert';
-import { AlertComponent } from './components/alert/alert.component';
-import { SignalChatService } from './services/signal-chat.service';
-import { FormsModule } from '@angular/forms';
+
+import { SignalChatService } from './core/services/signal-chat.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, AlertComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent {
   title = 'chat_app';
-  alerts: Alert[] | null = null;
 
-  constructor(
-    private alertService: AlertService,
-    private signalChatService: SignalChatService
-  ) {
-    this.alertService.alert$.subscribe((alert) => {
-      this.alerts = alert;
-    });
-
-    this.signalChatService.startConnection();
+  constructor(private signalChatService: SignalChatService) {
+    // this.signalChatService.startConnection();
   }
 }

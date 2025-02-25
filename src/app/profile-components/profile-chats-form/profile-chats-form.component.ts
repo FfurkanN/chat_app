@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Chat } from '../../models/chat';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ChatService } from '../../services/chat.service';
+import { ChatService } from '../../core/services/chat.service';
 import { User } from '../../models/user';
 
 @Component({

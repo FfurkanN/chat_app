@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatService } from '../../services/chat.service';
+import { ChatService } from '../../core/services/chat.service';
 import { Chat } from '../../models/chat';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../core/services/user.service';
 import { ProfileChatsTableComponent } from '../profile-chats-table/profile-chats-table.component';
 import { ProfileChatsFormComponent } from '../profile-chats-form/profile-chats-form.component';
 

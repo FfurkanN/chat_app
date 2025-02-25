@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
-import { UserService } from '../../services/user.service';
+import { AuthService } from '../../core/services/auth.service';
+import { UserService } from '../../core/services/user.service';
 import { User } from '../../models/user';
 import { Chat } from '../../models/chat';
-import { ChatService } from '../../services/chat.service';
+import { ChatService } from '../../core/services/chat.service';
 import { DeleteChat } from '../../models/chat-delete';
 import {
   ActivatedRoute,
@@ -14,8 +14,8 @@ import {
 import { environment } from '../../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { ChatCreateComponent } from '../chat-create/chat-create.component';
-import { AlertService } from '../../services/alert.service';
-import { SignalChatService } from '../../services/signal-chat.service';
+import { AlertService } from '../../core/services/alert.service';
+import { SignalChatService } from '../../core/services/signal-chat.service';
 import { Message } from '../../models/message';
 
 @Component({

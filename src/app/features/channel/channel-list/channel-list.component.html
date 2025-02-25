@@ -1,0 +1,47 @@
+<aside id="logo-sidebar" class="h-full bg-gray-50 dark:bg-neutral-950">
+  <div
+    [ngClass]="{ 'w-20': !isListExpanded, 'w-52': isListExpanded }"
+    class="flex flex-col items-start h-full py-4 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-800 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:rounded-sm"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="size-10 stroke-2 stroke-gray-300 mb-5 ml-4 cursor-pointer hover:stroke-white select-none rounded-md"
+      viewBox="0 0 24 24"
+      (click)="expandList()"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z"
+      />
+    </svg>
+
+    <ul
+      class="font-medium flex flex-col items-center justify-center overflow-y-auto ml-2"
+    >
+      <li
+        class="group relative hover:bg-neutral-700/50 p-2 rounded-md cursor-pointer flex flex-row items-center w-full"
+      >
+        <img
+          class="size-10 rounded-full"
+          src="https://picsum.photos/200/300"
+          alt=""
+        />
+        <span
+          class="hidden absolute top-0 right-0 bg-green-600 z-20 rounded-full"
+          >aaa</span
+        >
+        <span
+          [ngClass]="{ hidden: !isListExpanded }"
+          class="hidden dark:text-gray-300 ml-2 truncate max-w-28"
+          >Channel1</span
+        >
+        <span
+          [ngClass]="{ 'group-hover:block': !isListExpanded }"
+          class="fixed hidden left-16 text-gray-300 dark:bg-stone-700/50 px-4 py-2 rounded-md"
+          >Channel1</span
+        >
+      </li>
+    </ul>
+  </div>
+</aside>

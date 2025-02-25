@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../core/services/user.service';
 import { Chat } from '../../models/chat';
 
 @Component({
