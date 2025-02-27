@@ -2,12 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Observable, map, throwError } from 'rxjs';
-import { LoginResponse } from '../../models/login-response';
 import { Router } from '@angular/router';
-import { RegisterRequest } from '../../models/register-request';
 import { environment } from '../../../environments/environment';
 import { LoginRequest } from '../models/login-req.model';
 import { User } from '../models/user.model';
+import { LoginResponse } from '../models/login-res.model';
+import { RegisterRequest } from '../models/register-req.model';
 
 @Injectable({
   providedIn: 'root',
@@ -21,11 +21,11 @@ export class AuthService {
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
     return this.httpClient
-      .post<LoginResponse>(environment.apiUrl + '/Auth/Login', credentials, {
-        withCredentials: true,
-      })
+      .post<LoginResponse>(environment.apiUrl + '/Auth/Login', credentials)
       .pipe(
         map((response) => {
+          localStorage.setItem('access_token', response.accessToken);
+          localStorage.setItem('refresh_token', response.refreshToken);
           return response;
         })
       );
@@ -33,9 +33,7 @@ export class AuthService {
 
   getUserData() {
     return this.httpClient
-      .get(`${environment.apiUrl}/Auth/GetUserByToken`, {
-        withCredentials: true,
-      })
+      .get(`${environment.apiUrl}/Auth/GetUserByToken`)
       .subscribe({
         next: (res) => {
           this.currentUserSubject.next(res);

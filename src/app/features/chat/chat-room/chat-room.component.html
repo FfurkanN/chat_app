@@ -4,31 +4,9 @@
   <div
     #chatContainer
     class="col-span-8 row-span-9 row-start-2 pt-5 overflow-y-auto h-full [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-900 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700 [&::-webkit-scrollbar-thumb]:rounded-sm [&::-webkit-scrollbar-track]:rounded-sm"
+    (scroll)="onScroll()"
   >
-    <div
-      #chatMessage
-      class="flex flex-col items-start dark:text-white text-black mx-8"
-      (click)="scrollToBottom()"
-    >
-      <div class="flex flex-row items-center">
-        <img
-          class="size-8 rounded-full mr-3"
-          src="https://picsum.photos/200/300"
-          alt="User profile image"
-        />
-        <span class="font-semibold text-base"> Furkan </span>
-        <span class="ml-3 dark:text-white/30 text-sm font-light">
-          12.11.2024
-        </span>
-      </div>
-      <div class="flex flex-col ml-10">
-        <p class="p-2 text-base font-normal dark:text-white/80">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quo,
-          distinctio.
-        </p>
-        <img class="w-1/2" src="https://picsum.photos/1920/1080" />
-      </div>
-    </div>
+    @for(message of messages.slice().reverse();track message.id){
     <div
       #chatMessage
       class="flex flex-col items-start dark:text-white text-black mx-8"
@@ -39,45 +17,62 @@
           src="https://picsum.photos/200/300"
           alt="User profile image"
         />
-        <span class="font-semibold text-base"> Furkan </span>
+        <span class="font-semibold text-base" (click)="generateMessages(50)">
+          {{ message.sender_Id }}
+        </span>
         <span class="ml-3 dark:text-white/30 text-sm font-light">
-          12.11.2024
+          {{ message.send_Date }}
         </span>
       </div>
       <div class="flex flex-col ml-10">
         <p class="p-2 text-base font-normal dark:text-white/80">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quo,
-          distinctio.
+          {{ message.content }}
         </p>
-        <img class="w-1/2" src="https://picsum.photos/1920/1080" />
+        @if(message.messageType == "image"){
+        <img class="w-2/3 max-h-96" src="{{ imageApiUrl + message.fileUrl }}" />
+        }@else { @if(message.fileName && message.fileUrl && message.fileSize){
+        <div
+          class="flex flex-row dark:bg-stone-900 p-3 rounded-md cursor-pointer"
+        >
+          <svg
+            class="size-10"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M19 9V17.8C19 18.9201 19 19.4802 18.782 19.908C18.5903 20.2843 18.2843 20.5903 17.908 20.782C17.4802 21 16.9201 21 15.8 21H8.2C7.07989 21 6.51984 21 6.09202 20.782C5.71569 20.5903 5.40973 20.2843 5.21799 19.908C5 19.4802 5 18.9201 5 17.8V6.2C5 5.07989 5 4.51984 5.21799 4.09202C5.40973 3.71569 5.71569 3.40973 6.09202 3.21799C6.51984 3 7.0799 3 8.2 3H13M19 9L13 3M19 9H14C13.4477 9 13 8.55228 13 8V3"
+              stroke="#000000"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <div
+            class="flex flex-col ml-2"
+            (click)="downloadFile(message.fileUrl, message.fileName)"
+          >
+            <span class="text-base text-gray-300">
+              {{ message.fileName }}
+            </span>
+            <span class="text-xs text-gray-400">
+              @if (message.fileSize >= 1048576) {
+              {{ (message.fileSize / 1048576).toFixed(2) }} MB } @else if
+              (message.fileSize >= 1024) {
+              {{ (message.fileSize / 1024).toFixed(2) }} KB } @else {
+              {{ message.fileSize }} B }
+            </span>
+          </div>
+        </div>
+        } }
       </div>
     </div>
-    <div
-      #chatMessage
-      class="flex flex-col items-start dark:text-white text-black mx-8"
-    >
-      <div class="flex flex-row items-center">
-        <img
-          class="size-8 rounded-full mr-3"
-          src="https://picsum.photos/200/300"
-          alt="User profile image"
-        />
-        <span class="font-semibold text-base"> Furkan </span>
-        <span class="ml-3 dark:text-white/30 text-sm font-light">
-          12.11.2024
-        </span>
-      </div>
-      <div class="flex flex-col ml-10">
-        <p class="p-2 text-base font-normal dark:text-white/80">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quo,
-          distinctio.
-        </p>
-        <img class="w-1/2" src="https://picsum.photos/1920/1080" />
-      </div>
-    </div>
+    }
   </div>
+  <!-- Message send textbox -->
   <form
     class="col-span-8 col-start-1 row-start-11 dark:bg-stone-900 flex flex-row justify-between items-center m-3 rounded-xl h-fit"
+    (ngSubmit)="sendMessage()"
   >
     <button
       class="fill-stone-900/80 hover:fill-stone-800 hover:bg-stone-800 ml-2 rounded-md p-1"
@@ -103,7 +98,12 @@
       </svg>
     </button>
     <!-- Send File or Image Button -->
-    <input #fileInput type="file" class="hidden" />
+    <input
+      #fileInput
+      type="file"
+      class="hidden"
+      (change)="onFileSelected($event)"
+    />
     <button
       class="fill-stone-900/80 hover:fill-stone-800 hover:bg-stone-800 ml-2 rounded-md p-1"
       (click)="fileInput.click()"
@@ -125,17 +125,22 @@
         </g>
       </svg>
     </button>
+    @if(fileToUpload){
     <div
       class="bg-stone-800 rounded-md text-xs flex items-center my-1 p-1 truncate"
     >
-      <button class="btn btn-xs btn-error mr-1">X</button>
-      File1
+      <button class="btn btn-xs btn-error mr-1" (click)="removeSelectedFile()">
+        X
+      </button>
+      {{ fileNameToUpload }}
     </div>
+    }
     <input
       type="text"
       placeholder="Type here"
-      class="input outline-none focus:outline-none w-full dark:bg-stone-900/80 border-none"
+      class="input outline-none focus:outline-none w-full dark:bg-stone-900/80 dark:text-gray-200 border-none"
       name="messageContent"
+      [(ngModel)]="messageToSend.content"
     />
 
     <button

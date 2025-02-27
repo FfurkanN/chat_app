@@ -1,7 +1,6 @@
-export interface MessageSendModel {
-  chatId: string;
+export interface MessageSend {
+  chatId: String;
   content: string;
-  sendDate: Date;
   fileName: string;
   fileUrl: string;
   fileSize: number;

@@ -8,16 +8,15 @@ export const JWTInterceptor = (
   next: HttpHandlerFn
 ): Observable<HttpEvent<any>> => {
   const authService = inject(AuthService);
+  console.log('Http Request captured', req);
 
-  // if (authService.isLoggedIn()) {
-  //   req = req.clone({
-  //     setHeaders: {
-  //       Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-  //     },
-  //   });
-  //   // console.log('HTTP request captured ', req);
-  //   return next(req);
-  // }
+  if (localStorage.getItem('access_token')) {
+    req = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+      },
+    });
+  }
 
   return next(req);
 };

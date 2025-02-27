@@ -19,14 +19,25 @@
     <ul
       class="font-medium flex flex-col items-center justify-center overflow-y-auto ml-2"
     >
+      @for(channel of channels;track channel.id){
       <li
         class="group relative hover:bg-neutral-700/50 p-2 rounded-md cursor-pointer flex flex-row items-center w-full"
+        (click)="setCurrentChannel(channel)"
       >
+        @if(channel.channelImageUrl != ""){
+        <img
+          class="size-10 rounded-full"
+          src=" {{ channel.channelImageUrl }} "
+          alt=""
+        />
+        }@else {
         <img
           class="size-10 rounded-full"
           src="https://picsum.photos/200/300"
           alt=""
         />
+        }
+
         <span
           class="hidden absolute top-0 right-0 bg-green-600 z-20 rounded-full"
           >aaa</span
@@ -34,14 +45,16 @@
         <span
           [ngClass]="{ hidden: !isListExpanded }"
           class="hidden dark:text-gray-300 ml-2 truncate max-w-28"
-          >Channel1</span
         >
+          {{ channel.name }}
+        </span>
         <span
           [ngClass]="{ 'group-hover:block': !isListExpanded }"
           class="fixed hidden left-16 text-gray-300 dark:bg-stone-700/50 px-4 py-2 rounded-md"
-          >Channel1</span
+          >{{ channel.name }}</span
         >
       </li>
+      }
     </ul>
   </div>
 </aside>

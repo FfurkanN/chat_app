@@ -1,10 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { User } from '../../models/user';
+import { BehaviorSubject, Observable } from 'rxjs';
+
 import { environment } from '../../../environments/environment';
-import { Chat } from '../../models/chat';
-import { Channel } from '../../models/channel';
+import { Channel } from '../models/channel.model';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +14,7 @@ export class UserService {
 
   getUserChannels(): Observable<Channel[]> {
     return this.httpClient.get<Channel[]>(
-      `${environment}/User/GetUserChannels`
+      `${environment.apiUrl}/User/GetUserChannels`
     );
   }
 

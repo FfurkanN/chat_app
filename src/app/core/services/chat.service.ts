@@ -1,21 +1,26 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { User } from '../../models/user';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Chat } from '../../models/chat';
-import { CreateChat } from '../../models/chat-create';
-import { DeleteChat } from '../../models/chat-delete';
-import { Message } from '../../models/message';
-import { MessageSendModel } from '../../models/message-send';
-import { UserChatModel } from '../../models/user-chat';
-import { Channel } from '../../models/channel';
+import { Chat } from '../models/chat.model';
+import { Message } from '../models/message.model';
+import { MessageSend } from '../models/send-message.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChatService {
   constructor(private httpClient: HttpClient) {}
+
+  private currentChatSubject = new BehaviorSubject<Chat | undefined>(undefined);
+  public currentChat$ = this.currentChatSubject.asObservable();
+
+  setCurrentChat(channel: Chat): void {
+    this.currentChatSubject.next(channel);
+  }
+  getCurrentChat(): Chat | undefined {
+    return this.currentChatSubject.value;
+  }
 
   getChats(channelId: string): Observable<Chat[]> {
     return this.httpClient.get<Chat[]>(
@@ -29,27 +34,43 @@ export class ChatService {
     );
   }
 
-  createChat(createChat: CreateChat): Observable<Chat> {
-    return this.httpClient.post<Chat>(
-      environment.apiUrl + '/Chat/Create',
-      createChat
-    );
-  }
+  // createChat(createChat: CreateChat): Observable<Chat> {
+  //   return this.httpClient.post<Chat>(
+  //     environment.apiUrl + '/Chat/Create',
+  //     createChat
+  //   );
+  // }
 
-  deleteChat(deleteChat: DeleteChat): Observable<Chat> {
-    return this.httpClient.delete<Chat>(
-      `${environment.apiUrl}/Chat/DeleteChat`,
-      { body: deleteChat }
-    );
-  }
+  // deleteChat(deleteChat: DeleteChat): Observable<Chat> {
+  //   return this.httpClient.delete<Chat>(
+  //     `${environment.apiUrl}/Chat/DeleteChat`,
+  //     { body: deleteChat }
+  //   );
+  // }
 
-  getMessages(chatId: string): Observable<Message[]> {
+  getMessages(chatId: string, lastMessageDate?: Date): Observable<Message[]> {
+    let params = new HttpParams().set('chatId', chatId);
+
+    if (lastMessageDate) {
+      const date =
+        lastMessageDate instanceof Date
+          ? lastMessageDate
+          : new Date(lastMessageDate);
+
+      const localDate = new Date(date.getTime() + 3 * 60 * 60 * 1000); // UTC+3 saat farkını ekle
+
+      const formattedDate = localDate.toISOString();
+
+      params = params.set('lastMessageDate', formattedDate);
+    }
+
     return this.httpClient.get<Message[]>(
-      `${environment}/Chat/GetMessages?chatId=${chatId}`
+      `${environment.apiUrl}/Chat/GetMessages`,
+      { params }
     );
   }
 
-  sendMessage(message: MessageSendModel): Observable<Message> {
+  sendMessage(message: MessageSend): Observable<Message> {
     return this.httpClient.post<Message>(
       `${environment.apiUrl}/Chat/SendMessage`,
       message

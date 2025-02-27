@@ -68,11 +68,7 @@
               "sslCert": "ssl/server.crt"
             },
             "development": {
-              "buildTarget": "chat_app:build:development",
-              "ssl": true,
-              "sslKey": "ssl/server.key",
-              "sslCert": "ssl/server.crt",
-              "hmr": true
+              "buildTarget": "chat_app:build:development"
             }
           },
           "defaultConfiguration": "development"

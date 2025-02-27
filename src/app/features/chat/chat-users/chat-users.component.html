@@ -1,6 +1,7 @@
 <div class="w-full h-full px-4">
   <h3 class="text-2xl dark:text-gray-300 font-semibold">Users</h3>
   <ul class="flex flex-col overflow-y-auto text-base mt-2">
+    @for(user of users;track user.id){
     <li
       class="flex flex-row justify-between items-center p-2 w-full dark:hover:bg-stone-900/50 rounded-md group cursor-pointer"
     >
@@ -10,9 +11,15 @@
           src="https://picsum.photos/200/300"
           alt=""
         />
-        <span class="dark:text-gray-300 truncate max-w-32"
-          >User1aaaaaaaaaaaaaaaaaaaaaaaaaa</span
+        <span
+          [ngClass]="{
+            'dark:text-stone-300': user.isOnline,
+            'dark:text-stone-600': !user.isOnline
+          }"
+          class="truncate max-w-32"
         >
+          {{ user.userName }}
+        </span>
       </div>
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -27,5 +34,6 @@
         />
       </svg>
     </li>
+    }
   </ul>
 </div>
