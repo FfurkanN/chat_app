@@ -16,6 +16,11 @@ export const routes: Routes = [
       ),
     // canActivate: [authGuard],
   },
+  {
+    path: 'profile',
+    loadChildren: () =>
+      import('./features/profile/profile.route').then((m) => m.PROFILE_ROUTES),
+  },
   // { path: '', component: ChatPageComponent, canActivate: [authGuard] },
   // {
   //   path: 'chat',
