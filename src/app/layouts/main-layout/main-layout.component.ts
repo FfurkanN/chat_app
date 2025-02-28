@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ChannelListComponent } from '../../features/channel/channel-list/channel-list.component';
 import { ChatListComponent } from '../../features/chat/chat-list/chat-list.component';
-import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
 import { ChatRoomComponent } from '../../features/chat/chat-room/chat-room.component';
+import { ChannelService } from '../../core/services/channel.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-main-layout',
@@ -10,10 +11,24 @@ import { ChatRoomComponent } from '../../features/chat/chat-room/chat-room.compo
   imports: [
     ChannelListComponent,
     ChatListComponent,
-    NavbarComponent,
     ChatRoomComponent,
+    CommonModule,
   ],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.css',
 })
-export class MainLayoutComponent {}
+export class MainLayoutComponent implements OnInit {
+  isCurrentChannel: boolean = false;
+  constructor(private channelService: ChannelService) {}
+
+  ngOnInit(): void {
+    this.channelService.currentChannel$.subscribe((channel) => {
+      console.log('Channel', channel);
+      if (channel) {
+        this.isCurrentChannel = true;
+      } else {
+        this.isCurrentChannel = false;
+      }
+    });
+  }
+}

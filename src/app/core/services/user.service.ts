@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { Channel } from '../models/channel.model';
@@ -11,7 +11,6 @@ import { User } from '../models/user.model';
 })
 export class UserService {
   constructor(private httpClient: HttpClient) {}
-
   getUserChannels(): Observable<Channel[]> {
     return this.httpClient.get<Channel[]>(
       `${environment.apiUrl}/User/GetUserChannels`
@@ -32,12 +31,7 @@ export class UserService {
   getUsersById(usersId: string[]): Observable<User[]> {
     return this.httpClient.post<User[]>(
       `${environment.apiUrl}/User/GetUserById`,
-      usersId,
-      {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-        }),
-      }
+      usersId
     );
   }
   uploadProfilePicture(file: File, userId: string): Observable<User> {

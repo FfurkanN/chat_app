@@ -14,6 +14,7 @@ import { ChannelService } from '../../../core/services/channel.service';
 export class ChannelListComponent implements OnInit {
   isListExpanded: boolean = false;
   channels: Channel[] = [];
+  isChannelCreating: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -32,6 +33,10 @@ export class ChannelListComponent implements OnInit {
   }
   setCurrentChannel(channel: Channel): void {
     this.channelService.setCurrentChannel(channel);
+  }
+
+  toggleChannelCreating() {
+    this.isChannelCreating = !this.isChannelCreating;
   }
 
   expandList(): void {

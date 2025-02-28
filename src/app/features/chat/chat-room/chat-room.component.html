@@ -2,28 +2,32 @@
   <app-navbar class="col-span-10"></app-navbar>
 
   <div
+    [ngClass]="{ hidden: !isCurrentChannel }"
     #chatContainer
     class="col-span-8 row-span-9 row-start-2 pt-5 overflow-y-auto h-full [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-900 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700 [&::-webkit-scrollbar-thumb]:rounded-sm [&::-webkit-scrollbar-track]:rounded-sm"
     (scroll)="onScroll()"
   >
-    @for(message of messages.slice().reverse();track message.id){
+    @for(message of messages;track message.id;let index = $index){
     <div
       #chatMessage
-      class="flex flex-col items-start dark:text-white text-black mx-8"
+      class="flex flex-col items-start dark:text-white text-black mx-8 opacity-100 translate-y-0 duration-500"
     >
+      @if(index === 0 || messages[index - 1].sender_Id !== message.sender_Id){
       <div class="flex flex-row items-center">
         <img
           class="size-8 rounded-full mr-3"
-          src="https://picsum.photos/200/300"
+          [src]="getSenderProfileImageUrl(message.sender_Id)"
           alt="User profile image"
         />
-        <span class="font-semibold text-base" (click)="generateMessages(50)">
-          {{ message.sender_Id }}
+        <span class="font-semibold text-base">
+          {{ getMessageSender(message.sender_Id) }}
         </span>
         <span class="ml-3 dark:text-white/30 text-sm font-light">
           {{ message.send_Date }}
         </span>
       </div>
+      }
+
       <div class="flex flex-col ml-10">
         <p class="p-2 text-base font-normal dark:text-white/80">
           {{ message.content }}
@@ -71,6 +75,7 @@
   </div>
   <!-- Message send textbox -->
   <form
+    [ngClass]="{ hidden: !isCurrentChannel }"
     class="col-span-8 col-start-1 row-start-11 dark:bg-stone-900 flex flex-row justify-between items-center m-3 rounded-xl h-fit"
     (ngSubmit)="sendMessage()"
   >
@@ -127,9 +132,12 @@
     </button>
     @if(fileToUpload){
     <div
-      class="bg-stone-800 rounded-md text-xs flex items-center my-1 p-1 truncate"
+      class="bg-stone-800 dark:bg-gray-200 rounded-md text-xs flex items-center my-1 p-1 truncate"
     >
-      <button class="btn btn-xs btn-error mr-1" (click)="removeSelectedFile()">
+      <button
+        class="btn btn-xs btn-error mr-1 text-red-600 text-base font-semibold"
+        (click)="removeSelectedFile()"
+      >
         X
       </button>
       {{ fileNameToUpload }}
@@ -161,6 +169,9 @@
       </svg>
     </button>
   </form>
-  <app-chat-users class="col-span-2 row-span-10 col-start-9 row-start-2">
-  </app-chat-users>
+
+  <div class="col-span-2 row-span-10 col-start-9 row-start-2">
+    <app-chat-users [ngClass]="{ hidden: !isCurrentChannel }" [users]="users">
+    </app-chat-users>
+  </div>
 </div>

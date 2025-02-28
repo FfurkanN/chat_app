@@ -4,12 +4,16 @@ import { environmentSignal } from '../../../environments/environment';
 import { UserService } from './user.service';
 import { Message } from '../models/message.model';
 import { AuthService } from './auth.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SignalChatService {
   private hubConnection!: signalR.HubConnection;
+
+  private currentSignalSubject = new BehaviorSubject<boolean>(false);
+  public currentSignal$ = this.currentSignalSubject.asObservable();
 
   constructor(private authService: AuthService) {}
 
@@ -29,6 +33,8 @@ export class SignalChatService {
             this.hubConnection
               .invoke('Connect', this.userId)
               .catch((err) => console.error(err));
+
+            this.currentSignalSubject.next(true);
           })
           .catch((err) => {
             console.error('Error while establishing connection', err);

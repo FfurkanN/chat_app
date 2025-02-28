@@ -14,11 +14,15 @@ import { FormsModule } from '@angular/forms';
 import { environment } from '../../../../environments/environment.development';
 import { concat } from 'rxjs';
 import { SignalChatService } from '../../../core/services/signal-chat.service';
+import { CommonModule } from '@angular/common';
+import { User } from '../../../core/models/user.model';
+import { ChannelService } from '../../../core/services/channel.service';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-chat-room',
   standalone: true,
-  imports: [ChatUsersComponent, NavbarComponent, FormsModule],
+  imports: [ChatUsersComponent, NavbarComponent, FormsModule, CommonModule],
   templateUrl: './chat-room.component.html',
   styleUrl: './chat-room.component.css',
 })
@@ -26,8 +30,12 @@ export class ChatRoomComponent implements OnInit {
   @ViewChild('chatContainer') chatContainer!: ElementRef;
 
   currentChatId: string = '';
+  isCurrentChannel: boolean = false;
+
+  isListExpanded: boolean = true;
 
   messages: Message[] = [];
+  users: User[] = [];
   isLoading: boolean = false;
 
   messageToSend: MessageSend = {
@@ -45,9 +53,26 @@ export class ChatRoomComponent implements OnInit {
 
   constructor(
     private chatService: ChatService,
-    private signalChatService: SignalChatService
+    private signalChatService: SignalChatService,
+    private channelService: ChannelService
   ) {}
   ngOnInit(): void {
+    this.channelService.currentChannel$.subscribe((channel) => {
+      if (channel) {
+        this.isCurrentChannel = true;
+        this.channelService.getUsersByChannelId(channel.id).subscribe({
+          next: (res) => {
+            this.users = res;
+          },
+          error: (err) => {
+            console.error(err);
+          },
+        });
+      } else {
+        this.isCurrentChannel = false;
+      }
+    });
+
     this.isLoading = true;
     this.chatService.currentChat$.subscribe((chat) => {
       if (chat) {
@@ -56,8 +81,7 @@ export class ChatRoomComponent implements OnInit {
 
         this.chatService.getMessages(chat.id, undefined).subscribe({
           next: (res) => {
-            this.messages = res;
-            console.log(res);
+            this.messages = res.reverse();
             this.isLoading = false;
             this.scrollToBottom();
           },
@@ -65,9 +89,16 @@ export class ChatRoomComponent implements OnInit {
       }
     });
 
-    this.signalChatService.receiveMessage((message) => {
-      this.messages.unshift(message);
-      this.scrollToBottom();
+    this.signalChatService.currentSignal$.subscribe((value) => {
+      if (value) {
+        console.log('Messages Listening');
+        this.signalChatService.receiveMessage((message) => {
+          if (this.currentChatId == message.chat_Id) {
+            this.messages.push(message);
+            this.scrollToBottom();
+          }
+        });
+      }
     });
   }
 
@@ -83,7 +114,7 @@ export class ChatRoomComponent implements OnInit {
 
           this.chatService.sendMessage(this.messageToSend).subscribe({
             next: (res) => {
-              this.messages.unshift(res);
+              this.messages.push(res);
               this.messageToSend.content = '';
               this.removeSelectedFile();
               this.scrollToBottom();
@@ -100,7 +131,7 @@ export class ChatRoomComponent implements OnInit {
       }
       this.chatService.sendMessage(this.messageToSend).subscribe({
         next: (res) => {
-          this.messages.unshift(res);
+          this.messages.push(res);
           this.messageToSend.content = '';
           this.scrollToBottom();
         },
@@ -114,14 +145,11 @@ export class ChatRoomComponent implements OnInit {
   loadMessages(): void {
     this.isLoading = true;
     this.chatService
-      .getMessages(
-        this.currentChatId,
-        this.messages[this.messages.length - 1].send_Date
-      )
+      .getMessages(this.currentChatId, this.messages[0].send_Date)
       .subscribe({
         next: (res) => {
           if (res) {
-            this.messages = this.messages.concat(res);
+            this.messages = [...res.reverse(), ...this.messages];
           }
 
           this.isLoading = false;
@@ -130,6 +158,23 @@ export class ChatRoomComponent implements OnInit {
           console.error(err);
         },
       });
+  }
+
+  getMessageSender(userId: string): string {
+    const user: User | undefined = this.users.find((user) => user.id == userId);
+    if (user) {
+      return user.userName;
+    }
+    return '';
+  }
+
+  getSenderProfileImageUrl(userId: string): string | undefined {
+    const user: User | undefined = this.users.find((user) => user.id == userId);
+    if (user) {
+      const imageUrl = this.imageApiUrl + user.profileImageUrl;
+      return imageUrl;
+    }
+    return '';
   }
 
   onFileSelected(event: Event): void {
@@ -161,38 +206,38 @@ export class ChatRoomComponent implements OnInit {
       }
     }
   }
-  generateMessages(count: number) {
-    const messageTypes = ['text', 'image', 'file'];
-    const messages: Message[] = [];
+  // generateMessages(count: number) {
+  //   const messageTypes = ['text', 'image', 'file'];
+  //   const messages: Message[] = [];
 
-    for (let i = 0; i < count; i++) {
-      const messageType =
-        messageTypes[Math.floor(Math.random() * messageTypes.length)];
-      const message = {
-        id: crypto.randomUUID(),
-        sender_Id: `user_${Math.floor(Math.random() * 10) + 1}`,
-        messageType: messageType,
-        content: messageType === 'text' ? `Message content ${i + 1}` : '',
-        fileName:
-          messageType !== 'text'
-            ? `file_${i + 1}.${messageType === 'image' ? 'jpg' : 'pdf'}`
-            : undefined,
-        fileUrl:
-          messageType !== 'text'
-            ? `https://example.com/files/file_${i + 1}`
-            : undefined,
-        fileSize:
-          messageType !== 'text'
-            ? Math.floor(Math.random() * 5000) + 100
-            : undefined,
-        send_Date: new Date(),
-      };
-      // this.messages.unshift(message);
-      messages.push(message);
-    }
-    this.messages = messages.concat(this.messages);
-    return messages;
-  }
+  //   for (let i = 0; i < count; i++) {
+  //     const messageType =
+  //       messageTypes[Math.floor(Math.random() * messageTypes.length)];
+  //     const message = {
+  //       id: crypto.randomUUID(),
+  //       sender_Id: `user_${Math.floor(Math.random() * 10) + 1}`,
+  //       messageType: messageType,
+  //       content: messageType === 'text' ? `Message content ${i + 1}` : '',
+  //       fileName:
+  //         messageType !== 'text'
+  //           ? `file_${i + 1}.${messageType === 'image' ? 'jpg' : 'pdf'}`
+  //           : undefined,
+  //       fileUrl:
+  //         messageType !== 'text'
+  //           ? `https://example.com/files/file_${i + 1}`
+  //           : undefined,
+  //       fileSize:
+  //         messageType !== 'text'
+  //           ? Math.floor(Math.random() * 5000) + 100
+  //           : undefined,
+  //       send_Date: new Date(),
+  //     };
+  //     // this.messages.unshift(message);
+  //     messages.push(message);
+  //   }
+  //   this.messages = messages.concat(this.messages);
+  //   return messages;
+  // }
 
   removeSelectedFile(): void {
     this.fileToUpload = undefined;
@@ -209,6 +254,9 @@ export class ChatRoomComponent implements OnInit {
       link.download = fileName || 'File';
       link.click();
     }
+  }
+  public toggleListExpanded(): void {
+    this.isListExpanded = !this.isListExpanded;
   }
 
   public scrollToBottom() {

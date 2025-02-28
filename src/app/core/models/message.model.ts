@@ -1,5 +1,6 @@
 export interface Message {
   id: string;
+  chat_Id: string;
   sender_Id: string;
   messageType: string;
   content: string;
