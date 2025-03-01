@@ -4,6 +4,7 @@ import { ChannelService } from '../../../core/services/channel.service';
 import { CommonModule } from '@angular/common';
 import { SignalChatService } from '../../../core/services/signal-chat.service';
 import { environment } from '../../../../environments/environment.development';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-chat-users',
@@ -18,7 +19,10 @@ export class ChatUsersComponent implements OnInit {
 
   envImageUrl: string = '';
 
-  constructor(private signalChatService: SignalChatService) {}
+  constructor(
+    private signalChatService: SignalChatService,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.signalChatService.currentSignal$.subscribe((value) => {
@@ -27,6 +31,10 @@ export class ChatUsersComponent implements OnInit {
           const user = this.users.find((user) => user.id == userId);
           if (user) {
             user.isOnline = true;
+            this.toastService.showToast(
+              `${user.userName} is now online`,
+              'info'
+            );
           }
         });
 
@@ -34,6 +42,10 @@ export class ChatUsersComponent implements OnInit {
           const user = this.users.find((user) => user.id == userId);
           if (user) {
             user.isOnline = false;
+            this.toastService.showToast(
+              `${user.userName} is now offline`,
+              'info'
+            );
           }
         });
       }

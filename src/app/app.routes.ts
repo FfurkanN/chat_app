@@ -14,7 +14,7 @@ export const routes: Routes = [
       import('./layouts/main-layout/main-layout.component').then(
         (m) => m.MainLayoutComponent
       ),
-    // canActivate: [authGuard],
+    canActivate: [authGuard],
   },
   {
     path: 'profile',

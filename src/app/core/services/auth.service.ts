@@ -37,7 +37,7 @@ export class AuthService {
       .subscribe({
         next: (res) => {
           this.currentUserSubject.next(res);
-          // this.router.navigate(['/chat']);
+          this.router.navigate(['/chat']);
         },
         error: (err) => {
           console.error(err);

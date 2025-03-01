@@ -206,38 +206,6 @@ export class ChatRoomComponent implements OnInit {
       }
     }
   }
-  // generateMessages(count: number) {
-  //   const messageTypes = ['text', 'image', 'file'];
-  //   const messages: Message[] = [];
-
-  //   for (let i = 0; i < count; i++) {
-  //     const messageType =
-  //       messageTypes[Math.floor(Math.random() * messageTypes.length)];
-  //     const message = {
-  //       id: crypto.randomUUID(),
-  //       sender_Id: `user_${Math.floor(Math.random() * 10) + 1}`,
-  //       messageType: messageType,
-  //       content: messageType === 'text' ? `Message content ${i + 1}` : '',
-  //       fileName:
-  //         messageType !== 'text'
-  //           ? `file_${i + 1}.${messageType === 'image' ? 'jpg' : 'pdf'}`
-  //           : undefined,
-  //       fileUrl:
-  //         messageType !== 'text'
-  //           ? `https://example.com/files/file_${i + 1}`
-  //           : undefined,
-  //       fileSize:
-  //         messageType !== 'text'
-  //           ? Math.floor(Math.random() * 5000) + 100
-  //           : undefined,
-  //       send_Date: new Date(),
-  //     };
-  //     // this.messages.unshift(message);
-  //     messages.push(message);
-  //   }
-  //   this.messages = messages.concat(this.messages);
-  //   return messages;
-  // }
 
   removeSelectedFile(): void {
     this.fileToUpload = undefined;

@@ -1,5 +1,8 @@
 <main class="w-full h-full flex justify-center items-center">
-  <form class="w-full max-w-xl mx-auto" (ngSubmit)="login()">
+  <form
+    class="w-full max-w-xl mx-auto bg-neutral-900/30 p-10 rounded-xl"
+    (ngSubmit)="login()"
+  >
     <h1
       class="w-full py-5 text-3xl dark:text-gray-200 font-semibold text-center"
     >
@@ -35,6 +38,13 @@
         [(ngModel)]="loginReq.Password"
       />
     </div>
+    <div class="my-3">
+      <label
+        class="text-sm font-medium text-gray-900 dark:text-gray-300 hover:border-b cursor-pointer"
+        [routerLink]="['/auth', 'register']"
+        >Do you have an account?</label
+      >
+    </div>
     <div class="flex items-start mb-5">
       <div class="flex items-center h-5">
         <input
@@ -47,6 +57,7 @@
           [(ngModel)]="loginReq.RememberMe"
         />
       </div>
+
       <label
         for="remember"
         class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"

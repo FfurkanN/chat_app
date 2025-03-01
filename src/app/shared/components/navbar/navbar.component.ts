@@ -3,22 +3,33 @@ import { User } from '../../../core/models/user.model';
 import { AuthService } from '../../../core/services/auth.service';
 import { environment } from '../../../../environments/environment.development';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { ChannelService } from '../../../core/services/channel.service';
+import { Channel } from '../../../core/models/channel.model';
+import { Chat } from '../../../core/models/chat.model';
+import { ChatService } from '../../../core/services/chat.service';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent implements OnInit {
   currentUser: User | undefined = undefined;
+  currentChannel: Channel | undefined = undefined;
+  currentChat: Chat | undefined = undefined;
 
   envImageUrl: string = '';
   isDropdownOpen: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private channelService: ChannelService,
+    private chatService: ChatService
+  ) {}
 
   ngOnInit(): void {
     this.envImageUrl = environment.wwwrootUrl;
@@ -27,6 +38,13 @@ export class NavbarComponent implements OnInit {
       this.currentUser = user;
     });
     console.log(this.currentUser);
+
+    this.channelService.currentChannel$.subscribe((channel) => {
+      this.currentChannel = channel;
+    });
+    this.chatService.currentChat$.subscribe((chat) => {
+      this.currentChat = chat;
+    });
   }
 
   toggleDropdown(): void {

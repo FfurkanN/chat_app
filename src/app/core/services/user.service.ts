@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, debounceTime, map, Observable, of } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { Channel } from '../models/channel.model';
@@ -34,6 +34,30 @@ export class UserService {
       usersId
     );
   }
+
+  uploadUser(user: User): Observable<User> {
+    return this.httpClient.post<User>(
+      `${environment.apiUrl}/User/UpdateUser`,
+      user
+    );
+  }
+
+  checkUsername(username: string): Observable<boolean> {
+    if (!username) {
+      return of(false);
+    }
+
+    return this.httpClient
+      .get<{ avaliable: boolean }>(
+        `${environment.apiUrl}/User/UsernameAvaliable?username=${username}`
+      )
+      .pipe(
+        debounceTime(500),
+        map((response) => response.avaliable),
+        catchError(() => of(false))
+      );
+  }
+
   uploadProfilePicture(file: File, userId: string): Observable<User> {
     const formData = new FormData();
     formData.append('file', file);

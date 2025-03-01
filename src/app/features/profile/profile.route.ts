@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from '../../core/guards/auth.guard';
 
 export const PROFILE_ROUTES: Routes = [
   {
@@ -21,6 +22,7 @@ export const PROFILE_ROUTES: Routes = [
           import('./profile-settings/profile-settings.component').then(
             (m) => m.ProfileSettingsComponent
           ),
+        canActivate: [authGuard],
       },
       {
         path: 'channels',
@@ -28,6 +30,7 @@ export const PROFILE_ROUTES: Routes = [
           import('./profile-channels/profile-channels.component').then(
             (m) => m.ProfileChannelsComponent
           ),
+        canActivate: [authGuard],
       },
     ],
   },
