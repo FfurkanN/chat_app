@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
 export class ChatListComponent implements OnInit {
   chats: Chat[] = [];
 
-  isListExpanded: boolean = true;
+  isListExpanded: boolean = false;
 
   constructor(
     private chatService: ChatService,
@@ -27,6 +27,7 @@ export class ChatListComponent implements OnInit {
         this.chatService.getChats(channel.id).subscribe({
           next: (res) => {
             this.chats = res;
+            this.isListExpanded = true;
           },
         });
       }

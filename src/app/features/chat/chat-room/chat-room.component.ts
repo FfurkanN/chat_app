@@ -18,6 +18,7 @@ import { CommonModule } from '@angular/common';
 import { User } from '../../../core/models/user.model';
 import { ChannelService } from '../../../core/services/channel.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { UserService } from '../../../core/services/user.service';
 
 @Component({
   selector: 'app-chat-room',
@@ -54,7 +55,8 @@ export class ChatRoomComponent implements OnInit {
   constructor(
     private chatService: ChatService,
     private signalChatService: SignalChatService,
-    private channelService: ChannelService
+    private channelService: ChannelService,
+    private userService: UserService
   ) {}
   ngOnInit(): void {
     this.channelService.currentChannel$.subscribe((channel) => {
@@ -63,6 +65,7 @@ export class ChatRoomComponent implements OnInit {
         this.channelService.getUsersByChannelId(channel.id).subscribe({
           next: (res) => {
             this.users = res;
+            this.userService.setCurrentChannelUsers(res);
           },
           error: (err) => {
             console.error(err);
@@ -81,7 +84,11 @@ export class ChatRoomComponent implements OnInit {
 
         this.chatService.getMessages(chat.id, undefined).subscribe({
           next: (res) => {
-            this.messages = res.reverse();
+            if (res) {
+              this.messages = res.reverse();
+            } else {
+              this.messages = [];
+            }
             this.isLoading = false;
             this.scrollToBottom();
           },
@@ -143,21 +150,23 @@ export class ChatRoomComponent implements OnInit {
   }
 
   loadMessages(): void {
-    this.isLoading = true;
-    this.chatService
-      .getMessages(this.currentChatId, this.messages[0].send_Date)
-      .subscribe({
-        next: (res) => {
-          if (res) {
-            this.messages = [...res.reverse(), ...this.messages];
-          }
+    if (this.messages.length) {
+      this.isLoading = true;
+      this.chatService
+        .getMessages(this.currentChatId, this.messages[0].send_Date)
+        .subscribe({
+          next: (res) => {
+            if (res) {
+              this.messages = [...res.reverse(), ...this.messages];
+            }
 
-          this.isLoading = false;
-        },
-        error: (err) => {
-          console.error(err);
-        },
-      });
+            this.isLoading = false;
+          },
+          error: (err) => {
+            console.error(err);
+          },
+        });
+    }
   }
 
   getMessageSender(userId: string): string {

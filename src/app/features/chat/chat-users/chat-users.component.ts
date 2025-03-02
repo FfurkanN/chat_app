@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { SignalChatService } from '../../../core/services/signal-chat.service';
 import { environment } from '../../../../environments/environment.development';
 import { ToastService } from '../../../core/services/toast.service';
+import { UserService } from '../../../core/services/user.service';
 
 @Component({
   selector: 'app-chat-users',
@@ -14,17 +15,24 @@ import { ToastService } from '../../../core/services/toast.service';
   styleUrl: './chat-users.component.css',
 })
 export class ChatUsersComponent implements OnInit {
-  @Input() users: User[] = [];
+  users: User[] = [];
   isListExpanded: boolean = true;
 
   envImageUrl: string = '';
 
   constructor(
+    private userService: UserService,
     private signalChatService: SignalChatService,
     private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
+    this.userService.usersInCurrentChannel$.subscribe((users) => {
+      if (users) {
+        this.users = users;
+      }
+    });
+
     this.signalChatService.currentSignal$.subscribe((value) => {
       if (value) {
         this.signalChatService.userConnected((userId) => {

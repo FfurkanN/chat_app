@@ -1,6 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, debounceTime, map, Observable, of } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  debounceTime,
+  map,
+  Observable,
+  of,
+} from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { Channel } from '../models/channel.model';
@@ -10,6 +17,12 @@ import { User } from '../models/user.model';
   providedIn: 'root',
 })
 export class UserService {
+  private usersInCurrentChannelSubject = new BehaviorSubject<
+    User[] | undefined
+  >(undefined);
+  public usersInCurrentChannel$ =
+    this.usersInCurrentChannelSubject.asObservable();
+
   constructor(private httpClient: HttpClient) {}
   getUserChannels(): Observable<Channel[]> {
     return this.httpClient.get<Channel[]>(
@@ -21,6 +34,13 @@ export class UserService {
     return this.httpClient.get<Channel[]>(
       `${environment.apiUrl}/User/GetOwnedChannels`
     );
+  }
+
+  setCurrentChannelUsers(users: User[]): void {
+    this.usersInCurrentChannelSubject.next(users);
+  }
+  getCurrentChannelUsers(): User[] | undefined {
+    return this.usersInCurrentChannelSubject.value;
   }
 
   getUserByUsername(username: string): Observable<User | undefined> {

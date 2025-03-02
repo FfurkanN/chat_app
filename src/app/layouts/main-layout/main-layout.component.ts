@@ -4,6 +4,7 @@ import { ChatListComponent } from '../../features/chat/chat-list/chat-list.compo
 import { ChatRoomComponent } from '../../features/chat/chat-room/chat-room.component';
 import { ChannelService } from '../../core/services/channel.service';
 import { CommonModule } from '@angular/common';
+import { ChatUsersComponent } from '../../features/chat/chat-users/chat-users.component';
 
 @Component({
   selector: 'app-main-layout',
@@ -13,6 +14,7 @@ import { CommonModule } from '@angular/common';
     ChatListComponent,
     ChatRoomComponent,
     CommonModule,
+    ChatUsersComponent,
   ],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.css',
